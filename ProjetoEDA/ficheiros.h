@@ -1,16 +1,34 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-typedef struct registo {
+typedef struct registomeio {
 	int codigo;
 	char tipo[50];
 	float bateria;
 	float autonomia;
+	float custo;
+	char geocodigo[50];
 	struct registo* seguinte;
 } Meio;
 
-Meio* pegarregistromeios(Meio* inicio, FILE* txt);
+typedef struct registoutil {
+	char nome[100];
+	char morada[100];
+	int NIF;
+	float saldo;
+	struct registo* seguinte;
+} Utilizadores;
 
-void escrevertxtmeios(Meio* inicio, FILE* txt);
+typedef struct registoadmin {
+	char nome[100];
+	char senha[20];
+	struct registo* seguinte;
+} Administradores;
 
-void listarMeios(Meio* inicio);
+Meio* pegarregistomeios(Meio* inicio, FILE* bin);
+Administradores* pegarregistoadmin(Administradores* inicio, FILE* bin);
+Utilizadores* pegarregistoutil(Utilizadores* inicio, FILE* bin);
+
+void escreverbinmeios(Meio* inicio, FILE* bin);
+void escreverbinadmin(Administradores* inicio, FILE* bin);
+void escreverbinutil(Utilizadores* inicio, FILE* bin);
