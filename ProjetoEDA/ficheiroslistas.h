@@ -7,7 +7,7 @@ typedef struct registomeio {
 	float bateria;
 	float autonomia;
 	float custo;
-	char geocodigo[50];
+	char geocodigo[100];
 	struct registo* seguinte;
 } Meio;
 
@@ -38,3 +38,13 @@ void escreverbinutil(Utilizadores* inicio, FILE* bin);
 int existeMeio(Meio* inicio, int cod);
 Meio* inserirMeio(Meio* inicio, int cod, char tipo[], float bat, float aut, float cust, char geocod[]);
 Meio* removerMeio(Meio* inicio, int cod);
+
+//Admin
+Administradores* removerAdmins(Administradores* inicio, char nome[]);
+Administradores* inserirAdmins(Administradores* inicio, char nome[], char senha[]);
+int existeAdmin(Administradores* inicio, char nome[]);
+
+
+
+//BubbleSort dos Meios em ordem decrescente
+void BubbleSortMeios(Meio* inicio);

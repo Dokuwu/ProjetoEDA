@@ -21,10 +21,10 @@
   <ItemGroup>
     <ClCompile Include="ficheiros.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="manipficheiros.c" />
+    <ClCompile Include="maniplistas.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ficheiros.h" />
+    <ClInclude Include="ficheiroslistas.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ficheiros.h"
+#include "ficheiroslistas.h"
 
 
 void listarmeios(Meio* inicio) {
@@ -46,9 +46,9 @@ int main() {
 	Meio* meios = NULL;
 	Administradores* admins = NULL;
 	Utilizadores* utils = NULL;
-	int run = 1, bool = 1, exec = 1,login,adminchoice, utiladminmeio,cod;
+	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, adminchoice, utiladminmeio, cod;
 	float bat, aut, cust;
-	char nickname[20], password[20], tipo[20], geocod[20];
+	char nickname[20], password[20], tipo[20], geocod[20],adminnome[20],adminsenha[20];
 	meiosb = fopen("meios.bin", "rb");
 	meios = pegarregistomeios(meios, meiosb);
 	fclose(meiosb);
@@ -58,6 +58,7 @@ int main() {
 	utilsb = fopen("util.bin", "rb");
 	utils = pegarregistoutil(utils, utilsb);
 	fclose(utilsb);
+	BubbleSortMeios(meios);
 
 	while (run>0) {
 		login = 3;
@@ -68,71 +69,113 @@ int main() {
 				scanf("%d", &login);
 				system("cls");
 			}
+			
 			else if (login == 1) {//parte dos administradores
+				if(!(alreadylogged)){
 				printf("Bem-vindo Administrador! Por favor faca login.\n");
 				printf("Usuario: ");
 				scanf("%s", nickname);
 				printf("Senha: ");
 				scanf("%s", password);
+				alreadylogged = 1;
+				}
 				system("cls");
-				if (!(checkloginadmin(admins,nickname,password))) {//verificação do login
+				if (!(checkloginadmin(admins, nickname, password))) {//verificação do login
 					printf("ERRO! Nome de usuario ou senha errados!");
+					alreadylogged = 0;
 				}
 				else{
+					exec = 1;
 					while (exec) {
 						printf("O que deseja fazer?\n1- Registar novo utilizador, administrador ou meio\n2- Remocao de um utilizador, administrador ou meio\n");
-						printf("3- Alteracao da informacao de um utilizador, administrador ou meio\n4- Terminar sessao\n");
-						scanf("%d", adminchoice);
+						printf("3- Alteracao da informacao de um utilizador, administrador ou meio\n4- Listar dados\n5- Terminar sessao\n");
+						scanf("%d", &adminchoice);
 						system("cls");
+
 						// Adicionar dados às listas
-						if (adminchoice == 1) {// Adicionar dados às listas
+						if (adminchoice == 1) {
 							printf("Utilizador, administrador ou meio? (1,2,3)\n");
-							scanf("%d", utiladminmeio);
+							scanf("%d", &utiladminmeio);
+							system("cls");
 							if (utiladminmeio == 1) {//utilizador
 								printf("em desenvolvimento");
 							}
+
 							else if (utiladminmeio == 2) {//administrador
-								printf("em desenvolvimento");
+								printf("\nNome de usuario: \n");
+								scanf("%s", &adminnome);
+								printf("\nSenha:\n");
+								scanf("%s", &adminsenha);
+								system("cls");
+								if (!(existeAdmin(admins, adminnome))) {
+									admins = inserirAdmins(admins, adminnome, adminsenha);
+									printf("Adicionado com sucesso!");
+								}
+								else {
+									printf("ERRO DE DIGITACAO ENCONTRADO OU USUARIO JA EXISTENTE!\n");
+								}
 							}
+
 							else if (utiladminmeio == 3) {//meio
 								printf("Codigo\n");
-								scanf("%d",cod);
+								scanf("%d",&cod);
 								printf("\nTipo: (trotinete/bicicleta)\n");
-								while(bool){
-								scanf("%s", tipo);
-								if(!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta"))){
-									bool = 1;
+								bool = 1;
+								while (bool) {
+									scanf("%s", tipo);
+									if (!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta")))
+										bool = 0;
+									else
+										printf("Digitou errado, escreva de novo:\n");
 								}
 								printf("\nBateria\n");
-								scanf("%f", bat);
+								scanf("%f", &bat);
 								printf("\nAutonomia\n");
-								scanf("%f", aut);
+								scanf("%f", &aut);
 								printf("\nCusto\n");
-								scanf("%f", cust);
+								scanf("%f", &cust);
 								printf("\nGeocodigo\n");
 								scanf("%s", geocod);
-								meios = inserirMeio(meios, cod, tipo, bat, aut, cust, geocod);
+								system("cls");
+								if(!(existeMeio(meios, cod)) &&bat >= 0 && aut >=0 && cust >= 0){
+									meios = inserirMeio(meios, cod, tipo, bat, aut, cust, geocod);
+									BubbleSortMeios(meios);
+									printf("Adicionado com sucesso!");
+								}
+								else {
+									printf("ERRO DE DIGITACAO ENCONTRADO OU CODIGO JA EXISTENTE!\n");
+								}
 							}
 						}
+
+
 						//Remover dados das listas
 						else if (adminchoice == 2) {
 							printf("Utilizador, administrador ou meio? (1,2,3)\n");
-							scanf("%d", utiladminmeio);
+							scanf("%d", &utiladminmeio);
 							if (utiladminmeio == 1) {//utilizador
 								printf("em desenvolvimento");
 							}
 							else if (utiladminmeio == 2) {//administrador
-								printf("em desenvolvimento");
+								printf("Digite o nome de usuário:");
+								scanf("%s", &adminnome);
+								admins = removerAdmins(admins, adminnome);
+								printf("Removido com sucesso!");
 							}
 							else if (utiladminmeio == 3) {//meio
-								scanf("%d",cod);
-								removerMeio(meio, cod);
+								printf("Digite o codigo:");
+								scanf("%d", &cod);
+								meios = removerMeio(meios, cod);
+								printf("Removido com sucesso!");
 							}
 						}
+
+
+
 						//Alterar informação
 						else if (adminchoice == 3) {
 							printf("Utilizador, administrador ou meio? (1,2,3)\n");
-							scanf("%d", utiladminmeio);
+							scanf("%d", &utiladminmeio);
 							if (utiladminmeio == 1) {//utilizador
 								printf("em desenvolvimento");
 							}
@@ -143,16 +186,36 @@ int main() {
 								printf("em desenvolvimento");
 							}
 						}
+
+
 						else if (adminchoice == 4) {
+							listarmeios(meios);
+							listarutil(utils);
+							listaradmins(admins);
+						}
+
+
+						//Logout
+						else if (adminchoice == 5) {
+							alreadylogged = 0;
 							login = 3;
 							exec = 0;
 						}
-						printf("Deseja realizar outra operação?\n");
-						scanf("%d", &exec);
+
+						//No final de uma operação, pergunta se quer fazer mais alguma coisa, senão, envia para a escolha de login
+						if(adminchoice < 5){
+							printf("Deseja realizar outra operação? (0/1)\n");
+							scanf("%d", &exec);
+							if (exec <= 0){
+								alreadylogged = 0;
+								login = 3;
+							}
+						}
 					}
 				}
 			}
-		//Parte dos utilizadores
+
+			//Parte dos utilizadores
 			else if (login == 2) {
 			
 			}
