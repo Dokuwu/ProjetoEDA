@@ -16,6 +16,19 @@ void listarmeios(Meio* inicio) {
 	printf("\n\n\n");
 }
 
+void listarmeiosgeocod(Meio* inicio, char geocod[]) {
+	while (inicio != NULL) {
+		if(!(strcmp(inicio->geocodigo,geocod))){
+			printf("Codigo:%d Tipo:%s Bateria:%.2f\nAutonomia:%.2f Custo:%.2f$ geocodigo%s\n", inicio->codigo, inicio->tipo, inicio->bateria,
+				inicio->autonomia, inicio->custo, inicio->geocodigo);
+			printf("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-\n");
+		}
+		inicio = inicio->seguinte;
+	}
+	printf("\n\n\n");
+}
+
+
 void listaradmins(Administradores* inicio) {
 	while (inicio != NULL) {
 		printf("%s %s\n", inicio->nome, inicio->senha);
@@ -56,21 +69,13 @@ int checkloginutil(Utilizadores* inicio, char nome[50], int NIF) {
 	return 0;
 }
 
-float versaldo(Utilizadores* inicio, int utilNIF) {
-	while (inicio != NULL) {
-		if (inicio->NIF == utilNIF) {
-			printf("Seu saldo: %d$\n", inicio->saldo);
-		}
-		inicio = inicio->seguinte;
-	}
-}
 int main() {
-	FILE* meiosb,*adminsb,*utilsb;
+	FILE* meiosb,*adminsb,*utilsb,*historicaluguel;
 	Meio* meios = NULL;
 	Administradores* admins = NULL;
 	Utilizadores* utils = NULL;
 	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF;
-	float bat, aut, cust, utilsaldo;
+	float bat, aut, cust, utilsaldo,adicionarsaldo;
 	char nickname[20], password[20], tipo[20], geocod[20],adminnome[20],adminsenha[20],utilnome[50],utilmorada[50];
 	meiosb = fopen("meios.bin", "rb");
 	meios = pegarregistomeios(meios, meiosb);
@@ -212,8 +217,6 @@ int main() {
 							}
 						}
 
-
-
 						//Alterar informação
 						else if (choice == 3) {
 							printf("Utilizador, administrador ou meio? (1,2,3)\n");
@@ -246,7 +249,7 @@ int main() {
 
 						//No final de uma operação, pergunta se quer fazer mais alguma coisa, senão, envia para a escolha de login
 						if(choice < 5){
-							printf("Deseja realizar outra operacao? (0/1)\n");
+							printf("Deseja realizar outra operacao? (1/0)\n");
 							scanf("%d", &exec);
 							if (exec <= 0){
 								alreadylogged = 0;
@@ -256,7 +259,7 @@ int main() {
 					}
 				}
 			}
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			//Parte dos utilizadores
 			else if (login == 2) {
 				if (!(alreadylogged)) {
@@ -275,29 +278,50 @@ int main() {
 				else {
 					exec = 1;
 					while (exec) {
-						printf("O que deseja fazer?\n1- Ver Saldo\n2- Ver todos os meios\n3 - Ver os meios num geocodigo\n4- Terminar sessao");
+						printf("O que deseja fazer?\n1- Ver e adicionar saldo\n2- Ver todos os meios\n3- Ver os meios num geocodigo\n4- Alugar meio\n5- Terminar sessao\n");
 						scanf("%d", &choice);
 						system("cls");
 
-						//verSaldo
+						//ver Saldo
 						if (choice == 1) {
-							versaldo(utils, utilNIF);
+							verificarsaldo(utils, utilNIF,NULL, NULL, 0, NULL,NULL);//NULL serve para as variaveis presentes na função que não vao ser precisas
+							printf("Quer adicionar saldo?\n");
+							scanf("%f", &adicionarsaldo);//reutilização de variavel para poupar memoria e tempo
+							if (adicionarsaldo){
+								printf("Digite o valor a adicionar:\n");
+								scanf("%f", &adicionarsaldo);//reutilização de variavel para poupar memoria e tempo
+								verificarsaldo(utils, utilNIF, NULL, NULL, 1, adicionarsaldo, NULL);
+							}
 						}
 
+						//ver meios
 						else if (choice == 2) {
-							printf("Os meios existentes são: ");
+							printf("Os meios existentes são:\n");
 							listarmeios(meios);
 						}
 
-						//Logout
+						else if (choice == 3) {
+							printf("Escreva o geocodigo:");
+							scanf("%s", geocod);
+							printf("Os meios no geocodigo existentes sao:\n");
+							listarmeiosgeocod(meios, geocod);
+						}
+
 						else if (choice == 4) {
+							printf("Escreva o codigo do meio:");
+							scanf("%d", &cod);
+							verificarsaldo(utils, utilNIF, meios, cod, NULL, NULL, 1);//como o ultimo parametro está 1 ele vai passar para 
+
+						}
+						//Logout
+						else if (choice == 5) {
 							alreadylogged = 0;
 							login = 3;
 							exec = 0;
 						}
 
-						if (choice < 4) {
-							printf("Deseja realizar outra operacao? (0/1)\n");
+						if (choice < 5) {
+							printf("Deseja realizar outra operacao? (1/0)\n");
 							scanf("%d", &exec);
 							if (exec <= 0) {
 								alreadylogged = 0;
