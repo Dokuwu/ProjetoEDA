@@ -44,7 +44,10 @@ Administradores* removerAdmins(Administradores* inicio, char nome[]);
 Administradores* inserirAdmins(Administradores* inicio, char nome[], char senha[]);
 int existeAdmin(Administradores* inicio, char nome[]);
 
-
+//Utilizadores
+int existeUtil(Utilizadores* inicio, char nome[]);
+Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada, float saldo);
+Utilizadores* removerUtil(Utilizadores* inicio, int NIF);
 
 //BubbleSort dos Meios em ordem decrescente
 void BubbleSortMeios(Meio* inicio);

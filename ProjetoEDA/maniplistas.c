@@ -100,8 +100,60 @@ void BubbleSortMeios(Meio* inicio) {
 	}
 }
 //Parte de adição, remoção e alteração de utilizadores
+int existeUtil(Utilizadores* inicio, char nome[]) {
+	while (inicio != NULL)
+	{
+		if (!(strcmp(inicio->nome, nome))) return(1);
+		inicio = inicio->seguinte;
+	}
+	return(0);
+}
 
 
+Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada, float saldo) {
+	if (!existeUtil(inicio, nome))
+	{
+		Utilizadores* novo = malloc(sizeof(struct registoutil));
+		if (novo != NULL)
+		{
+			strcpy(novo->nome, nome);
+			novo->NIF = NIF;
+			strcpy(novo->morada, morada);
+			novo->saldo = saldo;
+			novo->seguinte = inicio;
+			return(novo);
+		}
+	}
+	else return(inicio);
+}
+
+
+Utilizadores* removerUtil(Utilizadores* inicio, int NIF) {
+	Utilizadores* anterior = inicio, * atual = inicio, * aux;
+
+	if (atual == NULL) return(NULL); // lista ligada vazia
+	else if (atual->NIF == NIF) // remoção do 1º registo
+	{
+		aux = atual->seguinte;
+		free(atual);
+		return(aux);
+	}
+	else
+	{
+		while ((atual != NULL) && (atual->NIF != NIF))
+		{
+			anterior = atual;
+			atual = atual->seguinte;
+		}
+		if (atual == NULL) return(inicio);
+		else
+		{
+			anterior->seguinte = atual->seguinte;
+			free(atual);
+			return(inicio);
+		}
+	}
+}
 
 //Parte de adição, remoção e alteração de administradores
 
