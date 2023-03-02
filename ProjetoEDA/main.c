@@ -29,12 +29,26 @@ void listarutil(Utilizadores* inicio) {
 	printf("\n\n\n");
 }
 
+int checkloginadmin(Administradores* inicio, char usuario[20], char senha[20]) {
+	while (inicio != NULL) {
+		if (!(strcmp(inicio->nome, usuario)) && !(strcmp(inicio->senha, senha))){
+			system("cls");
+			printf("Seja bem vindo %s!\n", inicio->nome);
+			return 1;
+		}
+		inicio = inicio->seguinte;
+	}
+	return 0;
+}
+
 int main() {
 	FILE* meiosb,*adminsb,*utilsb;
 	Meio* meios = NULL;
 	Administradores* admins = NULL;
 	Utilizadores* utils = NULL;
-
+	int run = 1, bool = 1, exec = 1,login,adminchoice, utiladminmeio,cod;
+	float bat, aut, cust;
+	char nickname[20], password[20], tipo[20], geocod[20];
 	meiosb = fopen("meios.bin", "rb");
 	meios = pegarregistomeios(meios, meiosb);
 	fclose(meiosb);
@@ -45,6 +59,108 @@ int main() {
 	utils = pegarregistoutil(utils, utilsb);
 	fclose(utilsb);
 
+	while (run>0) {
+		login = 3;
+		while(login <= 3 && login > 0){
+		
+			if(login == 3){//verificar se é igual a 3, para se o util errar a senha, não aparecer para escolhar de novo
+				printf("Deseja fazer login como:\n1- Admin\n2- Utilizador\n0- Encerrar programa\n");
+				scanf("%d", &login);
+				system("cls");
+			}
+			else if (login == 1) {//parte dos administradores
+				printf("Bem-vindo Administrador! Por favor faca login.\n");
+				printf("Usuario: ");
+				scanf("%s", nickname);
+				printf("Senha: ");
+				scanf("%s", password);
+				system("cls");
+				if (!(checkloginadmin(admins,nickname,password))) {//verificação do login
+					printf("ERRO! Nome de usuario ou senha errados!");
+				}
+				else{
+					while (exec) {
+						printf("O que deseja fazer?\n1- Registar novo utilizador, administrador ou meio\n2- Remocao de um utilizador, administrador ou meio\n");
+						printf("3- Alteracao da informacao de um utilizador, administrador ou meio\n4- Terminar sessao\n");
+						scanf("%d", adminchoice);
+						system("cls");
+						// Adicionar dados às listas
+						if (adminchoice == 1) {// Adicionar dados às listas
+							printf("Utilizador, administrador ou meio? (1,2,3)\n");
+							scanf("%d", utiladminmeio);
+							if (utiladminmeio == 1) {//utilizador
+								printf("em desenvolvimento");
+							}
+							else if (utiladminmeio == 2) {//administrador
+								printf("em desenvolvimento");
+							}
+							else if (utiladminmeio == 3) {//meio
+								printf("Codigo\n");
+								scanf("%d",cod);
+								printf("\nTipo: (trotinete/bicicleta)\n");
+								while(bool){
+								scanf("%s", tipo);
+								if(!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta"))){
+									bool = 1;
+								}
+								printf("\nBateria\n");
+								scanf("%f", bat);
+								printf("\nAutonomia\n");
+								scanf("%f", aut);
+								printf("\nCusto\n");
+								scanf("%f", cust);
+								printf("\nGeocodigo\n");
+								scanf("%s", geocod);
+								meios = inserirMeio(meios, cod, tipo, bat, aut, cust, geocod);
+							}
+						}
+						//Remover dados das listas
+						else if (adminchoice == 2) {
+							printf("Utilizador, administrador ou meio? (1,2,3)\n");
+							scanf("%d", utiladminmeio);
+							if (utiladminmeio == 1) {//utilizador
+								printf("em desenvolvimento");
+							}
+							else if (utiladminmeio == 2) {//administrador
+								printf("em desenvolvimento");
+							}
+							else if (utiladminmeio == 3) {//meio
+								scanf("%d",cod);
+								removerMeio(meio, cod);
+							}
+						}
+						//Alterar informação
+						else if (adminchoice == 3) {
+							printf("Utilizador, administrador ou meio? (1,2,3)\n");
+							scanf("%d", utiladminmeio);
+							if (utiladminmeio == 1) {//utilizador
+								printf("em desenvolvimento");
+							}
+							else if (utiladminmeio == 2) {//administrador
+								printf("em desenvolvimento");
+							}
+							else if (utiladminmeio == 3) {//meio
+								printf("em desenvolvimento");
+							}
+						}
+						else if (adminchoice == 4) {
+							login = 3;
+							exec = 0;
+						}
+						printf("Deseja realizar outra operação?\n");
+						scanf("%d", &exec);
+					}
+				}
+			}
+		//Parte dos utilizadores
+			else if (login == 2) {
+			
+			}
+		
+		}
+		printf("Deseja continuar a usar o programa? (0/1)\n");
+		scanf("%d", &run);
+	}
 	listarmeios(meios);
 	listarutil(utils);
 	listaradmins(admins);

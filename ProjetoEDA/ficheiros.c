@@ -24,7 +24,7 @@ void escreverbinmeios(Meio* inicio, FILE* bin) {
 
 	if (bin != NULL) {
 		while (inicio != NULL) {
-			fprintf(bin, "%d;%s;%f;%f;%f;%s\n", inicio->codigo, inicio->tipo, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
+			fprintf(bin, "%d;%s;%.2f;%.2f;%.2f;%s\n", inicio->codigo, inicio->tipo, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
 			inicio = inicio->seguinte;
 		}
 	}
@@ -51,7 +51,7 @@ void escreverbinutil(Utilizadores* inicio, FILE* bin) {
 
 	if (bin != NULL) {
 		while (inicio != NULL) {
-			fprintf(bin, "%s;%s;%d;%f\n", inicio->nome, inicio->morada, inicio->NIF, inicio->saldo);
+			fprintf(bin, "%s;%s;%d;%.2f\n", inicio->nome, inicio->morada, inicio->NIF, inicio->saldo);
 			inicio = inicio->seguinte;
 		}
 	}

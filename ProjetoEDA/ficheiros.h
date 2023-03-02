@@ -24,7 +24,7 @@ typedef struct registoadmin {
 	char senha[20];
 	struct registo* seguinte;
 } Administradores;
-
+//definições das funções para escrever e ler dados
 Meio* pegarregistomeios(Meio* inicio, FILE* bin);
 Administradores* pegarregistoadmin(Administradores* inicio, FILE* bin);
 Utilizadores* pegarregistoutil(Utilizadores* inicio, FILE* bin);
@@ -32,3 +32,9 @@ Utilizadores* pegarregistoutil(Utilizadores* inicio, FILE* bin);
 void escreverbinmeios(Meio* inicio, FILE* bin);
 void escreverbinadmin(Administradores* inicio, FILE* bin);
 void escreverbinutil(Utilizadores* inicio, FILE* bin);
+
+//definição das funções dos admins
+//Meios
+int existeMeio(Meio* inicio, int cod);
+Meio* inserirMeio(Meio* inicio, int cod, char tipo[], float bat, float aut, float cust, char geocod[]);
+Meio* removerMeio(Meio* inicio, int cod);

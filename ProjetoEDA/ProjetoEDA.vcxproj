@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="ficheiros.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="manipficheiros.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ficheiros.h" />
