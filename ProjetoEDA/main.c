@@ -7,9 +7,10 @@
 
 void listarmeios(Meio* inicio) {
 	while (inicio != NULL) {
-		printf("Codigo:%d Tipo:%s Bateria:%.2f\n Autonomia:%.2f Custo:%.2f geocodigo%s\n", inicio->codigo, inicio->tipo, inicio->bateria, 
+		printf("Codigo:%d Tipo:%s Bateria:%.2f\nAutonomia:%.2f Custo:%.2f$ geocodigo%s\n", inicio->codigo, inicio->tipo, inicio->bateria, 
 			inicio->autonomia, inicio->custo, inicio->geocodigo);
-		printf("--------------------------------------------------------------------------------------------------------------------\n");
+		printf("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-\n");
+
 		inicio = inicio->seguinte;
 	}
 	printf("\n\n\n");
@@ -274,13 +275,13 @@ int main() {
 				else {
 					exec = 1;
 					while (exec) {
-							printf("O que deseja fazer?\n1- Ver Saldo\n2- Ver todos os meios\n3 - Ver os meios num geocodigo\n4- Terminar sessao");
-							scanf("%d", &choice);
-							system("cls");
-					
+						printf("O que deseja fazer?\n1- Ver Saldo\n2- Ver todos os meios\n3 - Ver os meios num geocodigo\n4- Terminar sessao");
+						scanf("%d", &choice);
+						system("cls");
+
 						//verSaldo
 						if (choice == 1) {
-							versaldo(utils,utilNIF);
+							versaldo(utils, utilNIF);
 						}
 
 						else if (choice == 2) {
@@ -299,8 +300,8 @@ int main() {
 							printf("Deseja realizar outra operacao? (0/1)\n");
 							scanf("%d", &exec);
 							if (exec <= 0) {
-							alreadylogged = 0;
-							login = 3;
+								alreadylogged = 0;
+								login = 3;
 							}
 						}
 					}
