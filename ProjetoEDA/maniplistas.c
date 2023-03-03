@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<time.h>
 #include "ficheiroslistas.h"
 
 
@@ -67,38 +68,43 @@ Meio* removerMeio(Meio* inicio, int cod){
 void BubbleSortMeios(Meio* inicio) {
 	int b = 1;
 	Meio* atual, * seguinte;
-	//a variavel ultimo simboliza o fim da lista
+
 	while (b) {
 		b = 0;
 		atual = inicio;
-		//se o proximo do atual, for diferrente de ao ultimo ele vai realizar a verificação
 		while (atual->seguinte != NULL) {
-			seguinte = atual->seguinte;//pega o nó à frente do atual
+			seguinte = atual->seguinte;
 
-			if (atual->codigo < seguinte->codigo) {
-				// se o codigo da atual for menor que a do seguinte, troca os elementos
+			if (atual->autonomia < seguinte->autonomia) { // <-- Comparação modificada
 				int auxcodigo = atual->codigo;
 				float auxbateria = atual->bateria;
 				float auxautonomia = atual->autonomia;
-				char auxtipo[50];
+				float auxcusto = atual->custo;
+				char auxtipo[50],auxgeocod[50];
 				strcpy(auxtipo, atual->tipo);
+				strcpy(auxgeocod, atual->geocodigo);
 
+				atual->custo = seguinte->custo;
 				atual->codigo = seguinte->codigo;
 				atual->bateria = seguinte->bateria;
 				atual->autonomia = seguinte->autonomia;
 				strcpy(atual->tipo, seguinte->tipo);
+				strcpy(atual->geocodigo, seguinte->geocodigo);
 
+				seguinte->custo = auxcusto;
 				seguinte->codigo = auxcodigo;
 				seguinte->bateria = auxbateria;
 				seguinte->autonomia = auxautonomia;
 				strcpy(seguinte->tipo, auxtipo);
+				strcpy(seguinte->geocodigo, auxgeocod);
 
 				b = 1;
 			}
-			atual = seguinte;//depois de verificar, avança um nó para a frente
+			atual = seguinte;
 		}
 	}
 }
+
 //Parte de adição, remoção e alteração de utilizadores
 int existeUtil(Utilizadores* inicio, char nome[]) {
 	while (inicio != NULL)
@@ -207,4 +213,74 @@ Administradores* removerAdmins(Administradores* inicio, char nome[]){
 			return(inicio);
 		}
 	}
+}
+
+//Manipulação de saldo
+
+void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, int carregarvalor, int verificarsemaior) {
+	if (verificarsemaior == 0) {//Parte na qual o utilizador vê seu saldo e decide se quer adicionar dinheiro
+		while (inicioutil != NULL) {
+			if (valoradd == 0) {
+				if (inicioutil->NIF == utilNIF) {
+					printf("Seu saldo: %.2f$\n", inicioutil->saldo);
+					return;
+				}
+				inicioutil = inicioutil->seguinte;
+			}
+			else {
+				if (inicioutil->NIF == utilNIF) {
+					mexersaldo(inicioutil, NULL, valoradd, carregarvalor);
+					return;
+				}
+				inicioutil = inicioutil->seguinte;
+			}
+		}
+	}
+
+	else {//Parte do aluguel do meio
+		while (inicioutil != NULL) {
+			if (inicioutil->NIF == utilNIF) {
+				while (iniciomeio != NULL) {
+					if (iniciomeio->codigo == cod)
+						if (inicioutil->saldo > iniciomeio->custo) {// verifica se tem saldo para pagar
+							mexersaldo(inicioutil, iniciomeio, 0, NULL);
+							guardarhistorico(inicioutil, iniciomeio);
+							printf("Compra bem sucedida!\n");
+							return;
+						}
+						else {
+							printf("Seu saldo é menor que o custo do meio\n");
+							return;
+						}
+					iniciomeio = iniciomeio->seguinte;
+				}
+				printf("Não foi achado um meio com esse codigo.\n");//ao percorrer o while, se não encontrar o meio retorna isto
+				return;
+			}
+			inicioutil = inicioutil->seguinte;
+		}
+	}
+}
+
+
+void mexersaldo(Utilizadores* util, Meio* meio, int sinal, int valorcarregado) {
+	if (sinal) {
+		util->saldo += valorcarregado;
+	}
+	else {
+		util->saldo -= meio->custo;
+	}
+}
+
+void guardarhistorico(Utilizadores* util, Meio* meio) {
+	FILE* historico;
+	historico = fopen("historico.bin", "ab");
+	if (historico != NULL) {
+		time_t t;
+		time(&t);//função que pega a data atual e guarda na variavel
+		fprintf(historico, "Nome: %s NIF: %d Codigo do meio: %d Geocodigo: %s Data: %s", util->nome, util->NIF, meio->codigo, meio->geocodigo, ctime(&t));
+	}
+	else
+		printf("Erro ao abrir ficheiro para guardar historico!\n");
+	fclose(historico);
 }
