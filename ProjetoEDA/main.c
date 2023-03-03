@@ -4,13 +4,21 @@
 #include <string.h>
 #include "ficheiroslistas.h"
 
-
+/* checklist:
+1.sim Definição de uma estrutura de dados dinâmica (a validar previamente com o docente), para a representação dos meios de mobilidade elétrica, clientes e gestores;
+2.sim Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados);
+3.sim Inserção de novos dados (cliente/gestor/meio de mobilidade elétrica);
+4.sim Remoção de determinados dados (cliente/gestor/meio de mobilidade elétrica);
+5. Alteração de determinados dados (cliente/gestor/meio de mobilidade elétrica);
+6.sim Registo do aluguer de um determinado meio de mobilidade elétrica;
+7.sim Listagem dos meios de mobilidade elétrica por ordem decrescente de autonomia;
+8.sim Listagem dos meios de mobilidade elétrica existentes numa localização com determinado geocódigo.
+*/
 void listarmeios(Meio* inicio) {
 	while (inicio != NULL) {
-		printf("Codigo:%d Tipo:%s Bateria:%.2f\nAutonomia:%.2f Custo:%.2f$ geocodigo%s\n", inicio->codigo, inicio->tipo, inicio->bateria, 
+		printf("Codigo:%d Tipo:%s Bateria:%.2f\nAutonomia:%.2f Custo:%.2f$ geocodigo%s\n", inicio->codigo, inicio->tipo, inicio->bateria,
 			inicio->autonomia, inicio->custo, inicio->geocodigo);
 		printf("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-\n");
-
 		inicio = inicio->seguinte;
 	}
 	printf("\n\n\n");
@@ -76,7 +84,7 @@ int main() {
 	Utilizadores* utils = NULL;
 	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF;
 	float bat, aut, cust, utilsaldo,adicionarsaldo;
-	char nickname[20], password[20], tipo[20], geocod[20],adminnome[20],adminsenha[20],utilnome[50],utilmorada[50];
+	char nickname[20], password[20], tipo[20], geocod[50],adminnome[20],adminsenha[20],utilnome[50],utilmorada[50];
 	meiosb = fopen("meios.bin", "rb");
 	meios = pegarregistomeios(meios, meiosb);
 	fclose(meiosb);
@@ -286,10 +294,10 @@ int main() {
 						if (choice == 1) {
 							verificarsaldo(utils, utilNIF,NULL, NULL, 0, NULL,NULL);//NULL serve para as variaveis presentes na função que não vao ser precisas
 							printf("Quer adicionar saldo?\n");
-							scanf("%f", &adicionarsaldo);//reutilização de variavel para poupar memoria e tempo
+							scanf("%f", &adicionarsaldo);
 							if (adicionarsaldo){
 								printf("Digite o valor a adicionar:\n");
-								scanf("%f", &adicionarsaldo);//reutilização de variavel para poupar memoria e tempo
+								scanf("%f", &adicionarsaldo);
 								verificarsaldo(utils, utilNIF, NULL, NULL, 1, adicionarsaldo, NULL);
 							}
 						}
@@ -311,7 +319,6 @@ int main() {
 							printf("Escreva o codigo do meio:");
 							scanf("%d", &cod);
 							verificarsaldo(utils, utilNIF, meios, cod, NULL, NULL, 1);//como o ultimo parametro está 1 ele vai passar para 
-
 						}
 						//Logout
 						else if (choice == 5) {
@@ -351,6 +358,6 @@ int main() {
 	utilsb = fopen("util.bin", "wb");
 	escreverbinutil(utils, utilsb);
 	fclose(utilsb);
-
+	geocod[1] = 1;
 	return 1;
 }

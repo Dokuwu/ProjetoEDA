@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<time.h>
 #include "ficheiroslistas.h"
 
 
@@ -67,16 +68,14 @@ Meio* removerMeio(Meio* inicio, int cod){
 void BubbleSortMeios(Meio* inicio) {
 	int b = 1;
 	Meio* atual, * seguinte;
-	//a variavel ultimo simboliza o fim da lista
+
 	while (b) {
 		b = 0;
 		atual = inicio;
-		//se o proximo do atual, for diferrente de ao ultimo ele vai realizar a verificação
 		while (atual->seguinte != NULL) {
-			seguinte = atual->seguinte;//pega o nó à frente do atual
+			seguinte = atual->seguinte;
 
-			if (atual->codigo < seguinte->codigo) {
-				// se o codigo da atual for menor que a do seguinte, troca os elementos
+			if (atual->autonomia < seguinte->autonomia) { // <-- Comparação modificada
 				int auxcodigo = atual->codigo;
 				float auxbateria = atual->bateria;
 				float auxautonomia = atual->autonomia;
@@ -101,10 +100,11 @@ void BubbleSortMeios(Meio* inicio) {
 
 				b = 1;
 			}
-			atual = seguinte;//depois de verificar, avança um nó para a frente
+			atual = seguinte;
 		}
 	}
 }
+
 //Parte de adição, remoção e alteração de utilizadores
 int existeUtil(Utilizadores* inicio, char nome[]) {
 	while (inicio != NULL)
@@ -244,6 +244,8 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 					if (iniciomeio->codigo == cod)
 						if (inicioutil->saldo > iniciomeio->custo) {// verifica se tem saldo para pagar
 							mexersaldo(inicioutil, iniciomeio, 0, NULL);
+							guardarhistorico(inicioutil, iniciomeio);
+							printf("Compra bem sucedida!\n");
 							return;
 						}
 						else {
@@ -268,4 +270,17 @@ void mexersaldo(Utilizadores* util, Meio* meio, int sinal, int valorcarregado) {
 	else {
 		util->saldo -= meio->custo;
 	}
+}
+
+void guardarhistorico(Utilizadores* util, Meio* meio) {
+	FILE* historico;
+	historico = fopen("historico.bin", "ab");
+	if (historico != NULL) {
+		time_t t;
+		time(&t);//função que pega a data atual e guarda na variavel
+		fprintf(historico, "Nome: %s NIF: %d Codigo do meio: %d Geocodigo: %s Data: %s", util->nome, util->NIF, meio->codigo, meio->geocodigo, ctime(&t));
+	}
+	else
+		printf("Erro ao abrir ficheiro para guardar historico!\n");
+	fclose(historico);
 }
