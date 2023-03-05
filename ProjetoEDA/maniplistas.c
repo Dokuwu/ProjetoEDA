@@ -116,16 +116,16 @@ int existeUtil(Utilizadores* inicio, char nome[]) {
 }
 
 
-Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada, float saldo) {
+Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada[], float saldo) {
 	if (!existeUtil(inicio, nome))
 	{
 		Utilizadores* novo = malloc(sizeof(struct registoutil));
 		if (novo != NULL)
 		{
-			strcpy(novo->nome, nome);
 			novo->NIF = NIF;
-			strcpy(novo->morada, morada);
 			novo->saldo = saldo;
+			strcpy(novo->nome, nome);
+			strcpy(novo->morada, morada);
 			novo->seguinte = inicio;
 			return(novo);
 		}

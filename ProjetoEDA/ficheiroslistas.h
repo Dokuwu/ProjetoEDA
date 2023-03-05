@@ -8,21 +8,21 @@ typedef struct registomeio {
 	float autonomia;
 	float custo;
 	char geocodigo[100];
-	struct registo* seguinte;
+	struct registomeio* seguinte;
 } Meio;
 
 typedef struct registoutil {
 	char nome[100];
-	char morada[100];
+	char morada[200];
 	int NIF;
 	float saldo;
-	struct registo* seguinte;
+	struct registoutil* seguinte;
 } Utilizadores;
 
 typedef struct registoadmin {
 	char nome[100];
 	char senha[20];
-	struct registo* seguinte;
+	struct registoadmin* seguinte;
 } Administradores;
 //definições das funções para escrever e ler dados
 Meio* pegarregistomeios(Meio* inicio, FILE* bin);
@@ -46,7 +46,7 @@ int existeAdmin(Administradores* inicio, char nome[]);
 
 //Utilizadores
 int existeUtil(Utilizadores* inicio, char nome[]);
-Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada, float saldo);
+Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada[], float saldo);
 Utilizadores* removerUtil(Utilizadores* inicio, int NIF);
 
 //BubbleSort dos Meios em ordem decrescente
