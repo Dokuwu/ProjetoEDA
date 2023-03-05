@@ -6,11 +6,11 @@
 #include "ficheiroslistas.h"
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Parte de adição, remoção e alteração de meios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Determinar existência do 'codigo' na lista ligada 'inicio'
-// devolve 1 se existir ou 0 caso contrário
-int existeMeio(Meio* inicio, int cod){
+int existeMeio(Meio* inicio, int cod){//verifica se existe um meio com o codigo digitado
 	while (inicio != NULL)
 	{
 		if (inicio->codigo == cod) return(1);
@@ -65,6 +65,10 @@ Meio* removerMeio(Meio* inicio, int cod){
 	}
 }
 
+void mudarMeios(Meio* inicio, int cod) {
+
+}
+
 void BubbleSortMeios(Meio* inicio) {
 	int b = 1;
 	Meio* atual, * seguinte;
@@ -104,8 +108,10 @@ void BubbleSortMeios(Meio* inicio) {
 		}
 	}
 }
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Parte de adição, remoção e alteração de utilizadores
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 int existeUtil(Utilizadores* inicio, char nome[]) {
 	while (inicio != NULL)
 	{
@@ -161,7 +167,42 @@ Utilizadores* removerUtil(Utilizadores* inicio, int NIF) {
 	}
 }
 
+void mudarUtils(Utilizadores* inicio, int NIF) {
+	int i = 0;
+	char senha[20];
+	char nome[100], morada[150];
+	for (; i != 1;) {
+		if (inicio->NIF == NIF)
+			i = 1;
+		else
+			inicio = inicio->seguinte;
+	}
+	if (i == 0) {
+		printf("\nNão foi possivel encontrar correspondencia a esse NIF.\n");
+		return;
+	}
+	else {
+		printf("Nome\n");
+		getchar();
+		gets(nome);
+		strcpy(inicio->nome, nome);
+
+		printf("\nNIF:\n");
+		scanf("%d", &NIF);
+		inicio->NIF = NIF;
+
+		printf("\nMorada:\n");
+		getchar();
+		gets(morada);
+		system("cls");
+		strcpy(inicio->morada, morada);
+		printf("\nMudanca bem sucessida!\n");
+	}
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Parte de adição, remoção e alteração de administradores
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 int existeAdmin(Administradores* inicio,char nome[]){
 	while (inicio != NULL)
@@ -215,7 +256,34 @@ Administradores* removerAdmins(Administradores* inicio, char nome[]){
 	}
 }
 
+void mudarAdmins(Administradores* inicio, char nome[]) {
+	int i = 0;
+	char senha[20];
+	for (; i != 1;) {
+		if (!(strcmp(inicio->nome, nome)))
+			i = 1;
+		else
+			inicio = inicio->seguinte;
+	}
+	if (i == 0) {
+		printf("\nNão foi possivel encontrar correspondencia a esse nome.\n");
+		return;
+	}
+	else {
+		printf("Digite o nome de usuario: \n");
+		scanf("%s", nome);
+		printf("\nDigite a senha: ");
+		scanf("%s", senha);
+		strcpy(inicio->nome, nome);
+		strcpy(inicio->senha, senha);
+		system("cls");
+		printf("\nMudanca bem sucedida!\n");
+	}
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Manipulação de saldo
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, int carregarvalor, int verificarsemaior) {
 	if (verificarsemaior == 0) {//Parte na qual o utilizador vê seu saldo e decide se quer adicionar dinheiro
