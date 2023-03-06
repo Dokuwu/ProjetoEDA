@@ -8,6 +8,7 @@ typedef struct registomeio {
 	float autonomia;
 	float custo;
 	char geocodigo[100];
+	//guardar se está alugada
 	struct registomeio* seguinte;
 } Meio;
 
@@ -20,10 +21,13 @@ typedef struct registoutil {
 } Utilizadores;
 
 typedef struct registoadmin {
+	//cada gestor um codigo unico
+	int codigo;
 	char nome[100];
 	char senha[20];
 	struct registoadmin* seguinte;
 } Administradores;
+
 //definições das funções para escrever e ler dados
 Meio* pegarregistomeios(Meio* inicio, FILE* bin);
 Administradores* pegarregistoadmin(Administradores* inicio, FILE* bin);
@@ -41,10 +45,10 @@ Meio* removerMeio(Meio* inicio, int cod);
 void mudarMeios(Meio* inicio, int cod);
 
 //Admin
-int existeAdmin(Administradores* inicio, char nome[]);
-Administradores* removerAdmins(Administradores* inicio, char nome[]);
-Administradores* inserirAdmins(Administradores* inicio, char nome[], char senha[]);
-void mudarAdmins(Administradores* inicio, char nome[]);
+int existeAdmin(Administradores* inicio, int cod);
+Administradores* removerAdmins(Administradores* inicio, int cod);
+Administradores* inserirAdmins(Administradores* inicio,int cod, char nome[], char senha[]);
+void mudarAdmins(Administradores* inicio, int cod);
 
 //Utilizadores
 int existeUtil(Utilizadores* inicio, int NIF);

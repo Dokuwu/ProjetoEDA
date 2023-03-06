@@ -39,7 +39,7 @@ void listarmeiosgeocod(Meio* inicio, char geocod[]) {
 
 void listaradmins(Administradores* inicio) {
 	while (inicio != NULL) {
-		printf("%s %s\n", inicio->nome, inicio->senha);
+		printf("%d %s %s\n",inicio->codigo, inicio->nome, inicio->senha);
 		inicio = inicio->seguinte;
 	}
 	printf("\n\n\n");
@@ -53,9 +53,9 @@ void listarutil(Utilizadores* inicio) {
 	printf("\n\n\n");
 }
 
-int checkloginadmin(Administradores* inicio, char usuario[20], char senha[20]) {
+int checkloginadmin(Administradores* inicio, int codigo, char senha[20]) {
 	while (inicio != NULL) {
-		if (!(strcmp(inicio->nome, usuario)) && !(strcmp(inicio->senha, senha))){
+		if ((inicio->codigo == codigo && !(strcmp(inicio->senha, senha)))) {
 			system("cls");
 			printf("Seja bem vindo %s!\n", inicio->nome);
 			return 1;
@@ -82,7 +82,7 @@ int main() {
 	Meio* meios = NULL;
 	Administradores* admins = NULL;
 	Utilizadores* utils = NULL;
-	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF;
+	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF, logcodadmin , admincod;
 	float bat, aut, cust, utilsaldo,adicionarsaldo;
 	char nickname[20], password[20], tipo[20], geocod[50],adminnome[20],adminsenha[20],utilnome[60],utilmorada[100];
 	meiosb = fopen("meios.bin", "rb");
@@ -109,15 +109,15 @@ int main() {
 		else if (login == 1) {//parte dos administradores
 			if(!(alreadylogged)){
 			printf("Bem-vindo Administrador! Por favor faca login.\n");
-			printf("Usuario: ");
-			scanf("%s", nickname);
+			printf("Codigo: ");
+			scanf("%d", &logcodadmin);
 			printf("Senha: ");
 			scanf("%s", password);
 			alreadylogged = 1;
 			}
 			system("cls");
-			if (!(checkloginadmin(admins, nickname, password))) {//verificação do login
-				printf("ERRO! Nome de usuario ou senha errados!");
+			if (!(checkloginadmin(admins, logcodadmin, password))) {//verificação do login
+				printf("ERRO! Codigo ou senha errados!");
 				alreadylogged = 0;
 			}
 			else{
@@ -155,17 +155,20 @@ int main() {
 						}
 
 						else if (utiladminmeio == 2) {//administrador
+							printf("Codigo:\n");
+							scanf("%d", &admincod);
 							printf("\nNome de usuario: \n");
-							scanf("%s", &adminnome);
+							getchar();
+							gets(adminnome);
 							printf("\nSenha:\n");
 							scanf("%s", &adminsenha);
 							system("cls");
-							if (!(existeAdmin(admins, adminnome))) {
-								admins = inserirAdmins(admins, adminnome, adminsenha);
+							if (!(existeAdmin(admins, admincod))) {
+								admins = inserirAdmins(admins, admincod, adminnome, adminsenha);
 								printf("Adicionado com sucesso! ");
 							}
 							else {
-								printf("ERRO DE DIGITACAO ENCONTRADO OU USUARIO JA EXISTENTE!\n");
+								printf("ERRO DE DIGITACAO ENCONTRADO OU CODIGO JA EXISTENTE!\n");
 							}
 						}
 
@@ -214,9 +217,9 @@ int main() {
 							printf("Removido com sucesso! ");
 						}
 						else if (utiladminmeio == 2) {//administrador
-							printf("Digite o nome de usario:");
-							scanf("%s", &adminnome);
-							admins = removerAdmins(admins, adminnome);
+							printf("Digite o codigo de usuario:");
+							scanf("%d", &cod);
+							admins = removerAdmins(admins, cod);
 							system("cls");
 							printf("Removido com sucesso! ");
 						}
@@ -239,10 +242,9 @@ int main() {
 							mudarUtils(utils, utilNIF);
 						}
 						else if (utiladminmeio == 2) {//administrador
-							printf("Digite o nome do administrador de quem quer mudar as informacoes: ");
-							getchar();
-							gets(adminnome);
-							mudarAdmins(admins, adminnome);
+							printf("Digite o codigo do administrador de quem quer mudar as informacoes: ");
+							scanf("%d", &admincod);
+							mudarAdmins(admins, admincod);
 						}
 						else if (utiladminmeio == 3) {//meio
 							printf("Digite o codigo do meio de que quer mudar as informacoes: ");

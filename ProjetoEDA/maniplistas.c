@@ -339,21 +339,22 @@ void mudarUtils(Utilizadores* util, int NIF) {
 //Parte de adição, remoção e alteração de administradores
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-int existeAdmin(Administradores* inicio,char nome[]){
+int existeAdmin(Administradores* inicio,int cod){
 	while (inicio != NULL)
 	{
-		if (!(strcmp(inicio->nome,nome))) return(1);
+		if (inicio->codigo == cod) return(1);
 		inicio = inicio->seguinte;
 	}
 	return(0);
 }
 
-Administradores* inserirAdmins(Administradores* inicio, char nome[], char senha[]){
-	if (!existeAdmin(inicio, nome))
+Administradores* inserirAdmins(Administradores* inicio, int cod, char nome[], char senha[]) {
+	if (!existeAdmin(inicio, cod))
 	{
 		Administradores* novo = malloc(sizeof(struct registoadmin));
 		if (novo != NULL)
 		{
+			novo->codigo = cod;
 			strcpy(novo->nome, nome);
 			strcpy(novo->senha, senha);
 			novo->seguinte = inicio;
@@ -364,11 +365,11 @@ Administradores* inserirAdmins(Administradores* inicio, char nome[], char senha[
 }
 
 
-Administradores* removerAdmins(Administradores* inicio, char nome[]){
+Administradores* removerAdmins(Administradores* inicio, int cod){
 	Administradores* anterior = inicio, * atual = inicio, * aux;
 
 	if (atual == NULL) return(NULL); // lista ligada vazia
-	else if (!(strcmp(atual->nome,nome))) // remoção do 1º registo
+	else if (atual->codigo == cod) // remoção do 1º registo
 	{
 		aux = atual->seguinte;
 		free(atual);
@@ -376,7 +377,7 @@ Administradores* removerAdmins(Administradores* inicio, char nome[]){
 	}
 	else
 	{
-		while ((atual != NULL) && strcmp(atual->nome, nome))
+		while ((atual != NULL) && atual->codigo != cod)
 		{
 			anterior = atual;
 			atual = atual->seguinte;
@@ -391,16 +392,16 @@ Administradores* removerAdmins(Administradores* inicio, char nome[]){
 	}
 }
 
-void mudarAdmins(Administradores* admin, char nome[]) {
+void mudarAdmins(Administradores* admin, int cod) {
 	int i = 0, escolha = 1, choice;
-	char senha[20];
+	char senha[20], nome[100];
 	Administradores* inicio;
 	inicio = admin;
 	for (; (i == 1 || i == 2) != 1;) {
 		if (admin == NULL)
 			i = 2;
-		else{
-			if (!(strcmp(admin->nome, nome)))
+		else {
+			if (admin->codigo == cod)
 				i = 1;
 			else
 				admin = admin->seguinte;
@@ -413,22 +414,30 @@ void mudarAdmins(Administradores* admin, char nome[]) {
 	}
 	else {
 		while (escolha) {
-			printf("O que deseja mudar?\n1- Nome\n2- Senha\n0- Nada\n");
+			printf("O que deseja mudar?\n1- Codigo\n2- Nome\n3- Senha\n0- Nada\n");
 			scanf("%d", &choice);
 			if (choice >= 0 && choice < 4) {
-				if (choice == 1) {//Nome
-					printf("Digite o nome de usuario: \n");
-					scanf("%s", nome);
-					system("cls");
-					if (!(existeAdmin(inicio, nome))) {
-						strcpy(admin->nome, nome);
-						printf("Mudanca bem sucedida!\n");
+				if (choice == 1) {
+					printf("Digite o codigo: \n");
+					scanf("%d", &cod);
+					if (!(existeAdmin(inicio, cod))) {
+						admin->codigo = cod;
+						printf("Mudanca bem sucedida");
 					}
-					else
-						printf("Ja existe um admin com esse nome!\n");
+					else {
+						printf("Ja existe alguem com esse codigo!");
+					}
+				}
+				else if (choice == 2) {//Nome
+					printf("Digite o nome de usuario: \n");
+					getchar();
+					gets(nome);
+					system("cls");
+					strcpy(admin->nome, nome);
+					printf("Mudanca bem sucedida!\n");
 				}
 
-				else if (choice == 2) {//Senha
+				else if (choice == 3) {//Senha
 					printf("\nDigite a senha: ");
 					scanf("%s", senha);
 					strcpy(admin->senha, senha);
@@ -445,6 +454,7 @@ void mudarAdmins(Administradores* admin, char nome[]) {
 		}
 	}
 }
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Manipulação de saldo

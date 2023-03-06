@@ -67,7 +67,7 @@ Administradores* pegarregistoadmin(Administradores* inicio, FILE* bin) {
 	char linha[150];
 	while (fgets(linha, 150, bin) != NULL) {
 		Administradores* novo = malloc(sizeof(struct registoadmin));
-		sscanf(linha, "%[^;];%s", novo->nome, novo->senha);
+		sscanf(linha, "%d;%[^;];%s", &novo->codigo, novo->nome, novo->senha);
 		novo->seguinte = inicio;
 		inicio = novo;
 	}
