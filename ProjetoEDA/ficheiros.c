@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ficheiros.h"
+#include "ficheiroslistas.h"
 
 
  /*
@@ -10,8 +10,8 @@
  pegar e guardar meios
  */
 Meio* pegarregistomeios(Meio* inicio, FILE* bin) {
-	char linha[250];
-	while (fgets(linha, 250, bin) != NULL) {
+	char linha[300];
+	while (fgets(linha, 300, bin) != NULL) {
 		Meio* novo = malloc(sizeof(struct registomeio));
 		sscanf(linha, "%d;%[^;];%f;%f;%f;%s", &novo->codigo, novo->tipo, &novo->bateria, &novo->autonomia,&novo->custo, novo->geocodigo);
 		novo->seguinte = inicio;
@@ -24,7 +24,7 @@ void escreverbinmeios(Meio* inicio, FILE* bin) {
 
 	if (bin != NULL) {
 		while (inicio != NULL) {
-			fprintf(bin, "%d;%s;%f;%f;%f;%s\n", inicio->codigo, inicio->tipo, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
+			fprintf(bin, "%d;%s;%.2f;%.2f;%.2f;%s\n", inicio->codigo, inicio->tipo, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
 			inicio = inicio->seguinte;
 		}
 	}
@@ -51,7 +51,7 @@ void escreverbinutil(Utilizadores* inicio, FILE* bin) {
 
 	if (bin != NULL) {
 		while (inicio != NULL) {
-			fprintf(bin, "%s;%s;%d;%f\n", inicio->nome, inicio->morada, inicio->NIF, inicio->saldo);
+			fprintf(bin, "%s;%s;%d;%.2f\n", inicio->nome, inicio->morada, inicio->NIF, inicio->saldo);
 			inicio = inicio->seguinte;
 		}
 	}
