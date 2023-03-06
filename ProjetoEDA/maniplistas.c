@@ -6,11 +6,11 @@
 #include "ficheiroslistas.h"
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Parte de adição, remoção e alteração de meios
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Determinar existência do 'codigo' na lista ligada 'inicio'
-// devolve 1 se existir ou 0 caso contrário
-int existeMeio(Meio* inicio, int cod){
+int existeMeio(Meio* inicio, int cod){//verifica se existe um meio com o codigo digitado
 	while (inicio != NULL)
 	{
 		if (inicio->codigo == cod) return(1);
@@ -65,6 +65,115 @@ Meio* removerMeio(Meio* inicio, int cod){
 	}
 }
 
+void mudarMeios(Meio* meio, int cod) {
+	int i = 0, bool;
+	float bat, aut, cust;
+	char tipo[20], geocod[100];
+	int escolha = 1, choice;
+	Utilizadores* inicio;
+	inicio = meio;
+	for (; (i == 1 || i == 2) != 1;) {
+		if (meio == NULL)
+			i = 2;
+		else {
+			if (meio->codigo == cod)
+				i = 1;
+			else
+				meio = meio->seguinte;
+		}
+	}
+	if (i == 2) {
+		printf("\nNao foi possivel encontrar correspondencia a esse NIF.\n");
+		return;
+	}
+	else {
+		while (escolha) {
+			printf("O que deseja mudar?\n1- Codigo\n2- Tipo\n3- Bateria\n4- Autonomia\n5- Custo\n6- Geocodigo\n");
+			scanf("%d", &choice);
+			if (choice >= 0 && choice < 7) {
+				
+				if(choice == 1){
+					printf("Codigo\n");
+					scanf("%d", &cod);
+					if (!(existeMeio(inicio, cod))) {
+						meio->codigo = cod;
+						system("cls");
+						printf("Mudanca bem sucedida!\n");
+					}
+					else
+						printf("Existe um meio com esse codigo!");
+
+				}
+
+				else if(choice == 2){
+					printf("\nTipo: (trotinete/bicicleta)\n");
+					bool = 1;
+					while (bool) {
+						scanf("%s", tipo);
+						if ( (!(strcmp(tipo, "trotinete")) || (!(strcmp(tipo, "bicicleta")))))
+							bool = 0;
+						else
+							printf("Digitou errado, escreva de novo:\n");
+					}
+					strcpy(meio->tipo, tipo);
+					system("cls");
+					printf("Mudanca bem sucedida!\n");
+				}
+				
+				else if (choice == 3) {
+					printf("\nBateria\n");
+					scanf("%f", &bat);
+					if (bat > 0) {
+						meio->bateria = bat;
+						system("cls");
+						printf("Mudanca bem sucedida!\n");
+					}
+					else
+						printf("Valor digitado errado!");
+				}
+			
+				else if(choice == 4){
+					printf("\nAutonomia\n");
+					scanf("%f", &aut);
+					if (aut > 0) {
+						meio->autonomia = aut;
+						system("cls");
+						printf("Mudanca bem sucedida!\n");
+					}
+					else
+						printf("Valor digitado errado!");
+				}
+				
+				else if(choice == 5){
+					printf("\nCusto\n");
+					scanf("%f", &cust);
+					if (cust > 0) {
+						meio->custo = cust;
+						system("cls");
+						printf("Mudanca bem sucedida!\n");
+					}
+					else
+						printf("Valor digitado errado!");
+				}
+
+				else if (choice == 6){
+					printf("\nGeocodigo\n");
+					scanf("%s", geocod);
+					system("cls");
+					strcpy(meio->geocodigo, geocod);
+					system("cls");
+					printf("Mudanca bem sucedida!\n");
+				}
+				else if (choice == 0)
+					return;
+				printf("Deseja mudar mais alguma coisa? (1/0)\n");
+				scanf("%d", &escolha);
+				system("cls");
+			}
+		}
+	}
+}
+
 void BubbleSortMeios(Meio* inicio) {
 	int b = 1;
 	Meio* atual, * seguinte;
@@ -104,12 +213,14 @@ void BubbleSortMeios(Meio* inicio) {
 		}
 	}
 }
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Parte de adição, remoção e alteração de utilizadores
-int existeUtil(Utilizadores* inicio, char nome[]) {
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+int existeUtil(Utilizadores* inicio, int NIF) {
 	while (inicio != NULL)
 	{
-		if (!(strcmp(inicio->nome, nome))) return(1);
+		if (inicio->NIF == NIF) return(1);
 		inicio = inicio->seguinte;
 	}
 	return(0);
@@ -117,7 +228,7 @@ int existeUtil(Utilizadores* inicio, char nome[]) {
 
 
 Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada[], float saldo) {
-	if (!existeUtil(inicio, nome))
+	if (!existeUtil(inicio, NIF))
 	{
 		Utilizadores* novo = malloc(sizeof(struct registoutil));
 		if (novo != NULL)
@@ -161,7 +272,72 @@ Utilizadores* removerUtil(Utilizadores* inicio, int NIF) {
 	}
 }
 
+void mudarUtils(Utilizadores* util, int NIF) {
+	int i = 0;
+	char nome[100], morada[150];
+	int escolha = 1,choice;
+	Utilizadores* inicio;
+	inicio = util;
+	for (; (i == 1 || i == 2) != 1;) {
+		if (util == NULL)
+			i = 2;
+		else{
+			if (util->NIF == NIF)
+				i = 1;
+			else
+				util = util->seguinte;
+		}	
+	}
+	if (i == 2) {
+		printf("\nNao foi possivel encontrar correspondencia a esse NIF.\n");
+		return;
+	}
+	else {
+		while (escolha) {
+			printf("O que deseja mudar?\n1- Nome\n2- NIF\n3- Morada\n0- Nada\n");
+			scanf("%d", &choice);
+			if (choice >= 0 && choice < 4) {
+				if (choice == 1) {//Nome
+					printf("Nome\n");
+					getchar();
+					gets(nome);
+					strcpy(util->nome, nome);
+					system("cls");
+					printf("Mudanca bem sucedida!\n");
+				}
+
+				else if (choice == 2) {//NIF
+					printf("\nNIF:\n");
+					scanf("%d", &NIF);
+					system("cls");
+					if (!(existeUtil(inicio, NIF))){
+						util->NIF = NIF;
+					printf("Mudanca bem sucedida!\n");
+					}
+					else
+						printf("Ja existe um utilizador com esse NIF!\n");
+				}
+				else if (choice == 3) {//Morada
+					printf("\nMorada:\n");
+					getchar();
+					gets(morada);
+					strcpy(util->morada, morada);
+					system("cls");
+					printf("Mudanca bem sucedida!\n");
+				}
+				else if (choice == 0)
+					return;
+				printf("Deseja mudar mais alguma coisa? (1/0)\n");
+				scanf("%d", &escolha);
+				system("cls");
+			}
+		}	
+	}	
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Parte de adição, remoção e alteração de administradores
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 int existeAdmin(Administradores* inicio,char nome[]){
 	while (inicio != NULL)
@@ -215,12 +391,69 @@ Administradores* removerAdmins(Administradores* inicio, char nome[]){
 	}
 }
 
+void mudarAdmins(Administradores* admin, char nome[]) {
+	int i = 0, escolha = 1, choice;
+	char senha[20];
+	Administradores* inicio;
+	inicio = admin;
+	for (; (i == 1 || i == 2) != 1;) {
+		if (admin == NULL)
+			i = 2;
+		else{
+			if (!(strcmp(admin->nome, nome)))
+				i = 1;
+			else
+				admin = admin->seguinte;
+		}
+	}
+
+	if (i == 2) {
+		printf("\nNao foi possivel encontrar correspondencia a esse nome.\n");
+		return;
+	}
+	else {
+		while (escolha) {
+			printf("O que deseja mudar?\n1- Nome\n2- Senha\n0- Nada\n");
+			scanf("%d", &choice);
+			if (choice >= 0 && choice < 4) {
+				if (choice == 1) {//Nome
+					printf("Digite o nome de usuario: \n");
+					scanf("%s", nome);
+					system("cls");
+					if (!(existeAdmin(inicio, nome))) {
+						strcpy(admin->nome, nome);
+						printf("Mudanca bem sucedida!\n");
+					}
+					else
+						printf("Ja existe um admin com esse nome!\n");
+				}
+
+				else if (choice == 2) {//Senha
+					printf("\nDigite a senha: ");
+					scanf("%s", senha);
+					strcpy(admin->senha, senha);
+					system("cls");
+					printf("Mudanca bem sucedida!\n");
+				}
+
+				else if (choice == 0) return;
+
+				printf("Deseja mudar mais alguma coisa? (1/0)\n");
+				scanf("%d", &escolha);
+				system("cls");
+			}
+		}
+	}
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Manipulação de saldo
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, int carregarvalor, int verificarsemaior) {
 	if (verificarsemaior == 0) {//Parte na qual o utilizador vê seu saldo e decide se quer adicionar dinheiro
 		while (inicioutil != NULL) {
-			if (valoradd == 0) {
+			if (valoradd == 0) {//Só ver o saldo
 				if (inicioutil->NIF == utilNIF) {
 					printf("Seu saldo: %.2f$\n", inicioutil->saldo);
 					return;
@@ -228,7 +461,7 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 				inicioutil = inicioutil->seguinte;
 			}
 			else {
-				if (inicioutil->NIF == utilNIF) {
+				if (inicioutil->NIF == utilNIF) { // adicionar saldo
 					mexersaldo(inicioutil, NULL, valoradd, carregarvalor);
 					return;
 				}
@@ -254,7 +487,7 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 						}
 					iniciomeio = iniciomeio->seguinte;
 				}
-				printf("Não foi achado um meio com esse codigo.\n");//ao percorrer o while, se não encontrar o meio retorna isto
+				printf("Nao foi achado um meio com esse codigo.\n");//ao percorrer o while, se não encontrar o meio retorna isto
 				return;
 			}
 			inicioutil = inicioutil->seguinte;
@@ -264,10 +497,11 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 
 
 void mexersaldo(Utilizadores* util, Meio* meio, int sinal, int valorcarregado) {
-	if (sinal) {
+	if (sinal) {//adicionar o que o utilizador carregou de saldo
 		util->saldo += valorcarregado;
+		printf("\nSeu novo saldo é %.2f$\n", util->saldo);
 	}
-	else {
+	else {//tirar o custo do meio do saldo
 		util->saldo -= meio->custo;
 	}
 }

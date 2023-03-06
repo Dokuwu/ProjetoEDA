@@ -5,14 +5,14 @@
 #include "ficheiroslistas.h"
 
 /* checklist:
-1.sim Definição de uma estrutura de dados dinâmica (a validar previamente com o docente), para a representação dos meios de mobilidade elétrica, clientes e gestores;
-2.sim Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados);
-3.sim Inserção de novos dados (cliente/gestor/meio de mobilidade elétrica);
-4.sim Remoção de determinados dados (cliente/gestor/meio de mobilidade elétrica);
+1.sim| Definição de uma estrutura de dados dinâmica (a validar previamente com o docente), para a representação dos meios de mobilidade elétrica, clientes e gestores;
+2.sim| Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados);
+3.sim| Inserção de novos dados (cliente/gestor/meio de mobilidade elétrica);
+4.sim| Remoção de determinados dados (cliente/gestor/meio de mobilidade elétrica);
 5. Alteração de determinados dados (cliente/gestor/meio de mobilidade elétrica);
-6.sim Registo do aluguer de um determinado meio de mobilidade elétrica;
-7.sim Listagem dos meios de mobilidade elétrica por ordem decrescente de autonomia;
-8.sim Listagem dos meios de mobilidade elétrica existentes numa localização com determinado geocódigo.
+6.sim| Registo do aluguer de um determinado meio de mobilidade elétrica;
+7.sim| Listagem dos meios de mobilidade elétrica por ordem decrescente de autonomia;
+8.sim| Listagem dos meios de mobilidade elétrica existentes numa localização com determinado geocódigo.
 */
 void listarmeios(Meio* inicio) {
 	while (inicio != NULL) {
@@ -145,7 +145,7 @@ int main() {
 							printf("\nSaldo\n");
 							scanf("%f", &utilsaldo);
 							system("cls");
-							if (!(existeUtil(utils, utilnome)) && utilNIF > 99999999 && utilNIF < 1000000000) {
+							if (!(existeUtil(utils, utilNIF)) && utilNIF > 99999999 && utilNIF < 1000000000) {
 								utils = inserirUtils(utils, utilnome, utilNIF, utilmorada, utilsaldo);
 								printf("Adicionado com sucesso! ");
 							}
@@ -176,7 +176,7 @@ int main() {
 							bool = 1;
 							while (bool) {
 								scanf("%s", tipo);
-								if (!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta")))
+								if ( (!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta"))))
 									bool = 0;
 								else
 									printf("Digitou errado, escreva de novo:\n");
@@ -234,13 +234,20 @@ int main() {
 						printf("Utilizador, administrador ou meio? (1,2,3)\n");
 						scanf("%d", &utiladminmeio);
 						if (utiladminmeio == 1) {//utilizador
-							printf("em desenvolvimento");
+							printf("Digite o NIF de quem quer mudar as informacoes: ");
+							scanf("%d", &utilNIF);
+							mudarUtils(utils, utilNIF);
 						}
 						else if (utiladminmeio == 2) {//administrador
-							printf("em desenvolvimento");
+							printf("Digite o nome do administrador de quem quer mudar as informacoes: ");
+							getchar();
+							gets(adminnome);
+							mudarAdmins(admins, adminnome);
 						}
 						else if (utiladminmeio == 3) {//meio
-							printf("em desenvolvimento");
+							printf("Digite o codigo do meio de que quer mudar as informacoes: ");
+							scanf("%d", &cod);
+							mudarMeios(meios,cod);
 						}
 					}
 
@@ -273,6 +280,8 @@ int main() {
 		}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//Parte dos utilizadores
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 		else if (login == 2) {
 			if (!(alreadylogged)) {
 				printf("Bem-vindo Utilizador! Por favor faca login.\n");
