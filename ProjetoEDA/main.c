@@ -145,7 +145,7 @@ int main() {
 							printf("\nSaldo\n");
 							scanf("%f", &utilsaldo);
 							system("cls");
-							if (!(existeUtil(utils, utilnome)) && utilNIF > 99999999 && utilNIF < 1000000000) {
+							if (!(existeUtil(utils, utilNIF)) && utilNIF > 99999999 && utilNIF < 1000000000) {
 								utils = inserirUtils(utils, utilnome, utilNIF, utilmorada, utilsaldo);
 								printf("Adicionado com sucesso! ");
 							}
@@ -176,7 +176,7 @@ int main() {
 							bool = 1;
 							while (bool) {
 								scanf("%s", tipo);
-								if (!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta")))
+								if ( (!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta"))))
 									bool = 0;
 								else
 									printf("Digitou errado, escreva de novo:\n");
@@ -245,7 +245,9 @@ int main() {
 							mudarAdmins(admins, adminnome);
 						}
 						else if (utiladminmeio == 3) {//meio
-							//mudarMeio(meios);
+							printf("Digite o codigo do meio de que quer mudar as informacoes: ");
+							scanf("%d", &cod);
+							mudarMeios(meios,cod);
 						}
 					}
 

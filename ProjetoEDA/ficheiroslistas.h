@@ -38,7 +38,7 @@ void escreverbinutil(Utilizadores* inicio, FILE* bin);
 int existeMeio(Meio* inicio, int cod);
 Meio* inserirMeio(Meio* inicio, int cod, char tipo[], float bat, float aut, float cust, char geocod[]);
 Meio* removerMeio(Meio* inicio, int cod);
-void mudarMeio(Meio* inicio, int cod);
+void mudarMeios(Meio* inicio, int cod);
 
 //Admin
 int existeAdmin(Administradores* inicio, char nome[]);
@@ -47,7 +47,7 @@ Administradores* inserirAdmins(Administradores* inicio, char nome[], char senha[
 void mudarAdmins(Administradores* inicio, char nome[]);
 
 //Utilizadores
-int existeUtil(Utilizadores* inicio, char nome[]);
+int existeUtil(Utilizadores* inicio, int NIF);
 Utilizadores* inserirUtils(Utilizadores* inicio, char nome[], int NIF, char morada[], float saldo);
 Utilizadores* removerUtil(Utilizadores* inicio, int NIF);
 void mudarUtils(Utilizadores* inicio, int NIF);
