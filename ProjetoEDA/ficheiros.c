@@ -14,7 +14,8 @@ Meio* pegarregistomeios(Meio* inicio, FILE* bin) {
 	char linha[300];
 	while (fgets(linha, 300, bin) != NULL) {
 		Meio* novo = malloc(sizeof(struct registomeio));
-		sscanf(linha, "%d;%[^;];%f;%f;%f;%s", &novo->codigo, novo->tipo, &novo->bateria, &novo->autonomia,&novo->custo, novo->geocodigo);
+		sscanf(linha, "%d;%[^;];%d;%f;%f;%f;%s", &novo->codigo, novo->tipo, &novo->alugado, &novo->bateria, &novo->autonomia,&novo->custo, novo->geocodigo);
+		//novo->alugado = 0;//para realização de teste e espera de uma solução
 		novo->seguinte = inicio;
 		inicio = novo;
 	}
@@ -25,7 +26,7 @@ void escreverbinmeios(Meio* inicio, FILE* bin) {
 
 	if (bin != NULL) {
 		while (inicio != NULL) {
-			fprintf(bin, "%d;%s;%.2f;%.2f;%.2f;%s\n", inicio->codigo, inicio->tipo, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
+			fprintf(bin, "%d;%s;&d;%.2f;%.2f;%.2f;%s\n", inicio->codigo, inicio->tipo,inicio->alugado, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
 			inicio = inicio->seguinte;
 		}
 	}
