@@ -517,16 +517,3 @@ void mexersaldo(Utilizadores* util, Meio* meio, int sinal, float valorcarregado)
 		util->saldo -= meio->custo;
 	}
 }
-
-void guardarhistorico(Utilizadores* util, Meio* meio) {
-	FILE* historico;
-	historico = fopen("historico.bin", "ab");
-	if (historico != NULL) {
-		time_t t;
-		time(&t);//função que pega a data atual e guarda na variavel
-		fprintf(historico, "Nome: %s NIF: %d Codigo do meio: %d Geocodigo: %s Data: %s", util->nome, util->NIF, meio->codigo, meio->geocodigo, ctime(&t));
-	}
-	else
-		printf("Erro ao abrir ficheiro para guardar historico!\n");
-	fclose(historico);
-}

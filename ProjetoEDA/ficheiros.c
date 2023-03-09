@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "ficheiroslistas.h"
 
 
@@ -82,4 +83,20 @@ void escreverbinadmin(Administradores* inicio, FILE* bin) {
 		}
 	else
 		printf("Erro na execucao do ficheiro");
+}
+
+
+
+
+void guardarhistorico(Utilizadores* util, Meio* meio) {
+	FILE* historico;
+	historico = fopen("historico.bin", "ab");
+	if (historico != NULL) {
+		time_t t;
+		time(&t);//função que pega a data atual e guarda na variavel
+		fprintf(historico, "Nome: %s NIF: %d Codigo do meio: %d Geocodigo: %s Data: %s", util->nome, util->NIF, meio->codigo, meio->geocodigo, ctime(&t));
+	}
+	else
+		printf("Erro ao abrir ficheiro para guardar historico!\n");
+	fclose(historico);
 }
