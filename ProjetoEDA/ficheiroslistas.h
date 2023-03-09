@@ -60,6 +60,6 @@ void mudarUtils(Utilizadores* inicio, int NIF);
 void BubbleSortMeios(Meio* inicio);
 
 //Gerenciamento de saldo do utilizador
-void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, int carregarvalor, int verificarsemaior);
-void mexersaldo(Utilizadores * util, Meio * meio, int sinal, int valorcarregado);
+void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, float carregarvalor, int verificarsemaior);
+void mexersaldo(Utilizadores * util, Meio * meio, int sinal, float valorcarregado);
 void guardarhistorico(Utilizadores* util, Meio* meio);

@@ -77,7 +77,7 @@ Administradores* pegarregistoadmin(Administradores* inicio, FILE* bin) {
 void escreverbinadmin(Administradores* inicio, FILE* bin) {
 	if (bin != NULL)
 		while (inicio != NULL) {
-			fprintf(bin, "%s;%s\n", inicio->nome, inicio->senha);
+			fprintf(bin, "%d;%s;%s\n",inicio->codigo, inicio->nome, inicio->senha);
 			inicio = inicio->seguinte;
 		}
 	else

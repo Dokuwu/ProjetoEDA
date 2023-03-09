@@ -67,7 +67,7 @@ int checkloginadmin(Administradores* inicio, int codigo, char senha[20]) {
 
 int checkloginutil(Utilizadores* inicio, char nome[50], int NIF) {
 	while (inicio != NULL) {
-		if (!(strcmp(inicio->nome, nome)) && inicio->NIF) {
+		if ((!(strcmp(inicio->nome, nome)) && inicio->NIF == NIF)) {
 			system("cls");
 			printf("Seja bem vindo %s!\n", inicio->nome);
 			return 1;
@@ -308,7 +308,7 @@ int main() {
 
 					//ver Saldo
 					if (choice == 1) {
-						verificarsaldo(utils, utilNIF,NULL, NULL, 0, NULL,NULL);//NULL serve para as variaveis presentes na função que não vao ser precisas
+						verificarsaldo(utils, utilNIF,NULL, NULL, 0, 0,NULL);//NULL serve para as variaveis presentes na função que não vao ser precisas, existe um 0 para o qual é float
 						printf("Quer adicionar saldo? (1/0)\n");
 						scanf("%f", &adicionarsaldo);
 						if (adicionarsaldo){
@@ -334,7 +334,7 @@ int main() {
 					else if (choice == 4) {
 						printf("Escreva o codigo do meio:");
 						scanf("%d", &cod);
-						verificarsaldo(utils, utilNIF, meios, cod, NULL, NULL, 1);//como o ultimo parametro está 1 ele vai passar para 
+						verificarsaldo(utils, utilNIF, meios, cod, NULL, 0, 1);//como o ultimo parametro está 1 ele vai passar para 
 					}
 					//Logout
 					else if (choice == 5) {

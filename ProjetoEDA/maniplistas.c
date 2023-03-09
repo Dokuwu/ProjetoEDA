@@ -88,7 +88,7 @@ void mudarMeios(Meio* meio, int cod) {
 	}
 	else {
 		while (escolha) {
-			printf("O que deseja mudar?\n1- Codigo\n2- Tipo\n3- Bateria\n4- Autonomia\n5- Custo\n6- Geocodigo\n");
+			printf("O que deseja mudar?\n1- Codigo\n2- Tipo\n3- Bateria\n4- Autonomia\n5- Custo\n6- Geocodigo\n0- Nada\n");
 			scanf("%d", &choice);
 			if (choice >= 0 && choice < 7) {
 				
@@ -123,7 +123,7 @@ void mudarMeios(Meio* meio, int cod) {
 				else if (choice == 3) {
 					printf("\nBateria\n");
 					scanf("%f", &bat);
-					if (bat > 0) {
+					if (bat >= 0) {
 						meio->bateria = bat;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -135,7 +135,7 @@ void mudarMeios(Meio* meio, int cod) {
 				else if(choice == 4){
 					printf("\nAutonomia\n");
 					scanf("%f", &aut);
-					if (aut > 0) {
+					if (aut >= 0) {
 						meio->autonomia = aut;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -422,7 +422,8 @@ void mudarAdmins(Administradores* admin, int cod) {
 					scanf("%d", &cod);
 					if (!(existeAdmin(inicio, cod))) {
 						admin->codigo = cod;
-						printf("Mudanca bem sucedida");
+						system("cls");
+						printf("Mudanca bem sucedida\n");
 					}
 					else {
 						printf("Ja existe alguem com esse codigo!");
@@ -434,6 +435,7 @@ void mudarAdmins(Administradores* admin, int cod) {
 					gets(nome);
 					system("cls");
 					strcpy(admin->nome, nome);
+					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}
 
@@ -460,7 +462,7 @@ void mudarAdmins(Administradores* admin, int cod) {
 //Manipulação de saldo
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, int carregarvalor, int verificarsemaior) {
+void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, float carregarvalor, int verificarsemaior) {
 	if (verificarsemaior == 0) {//Parte na qual o utilizador vê seu saldo e decide se quer adicionar dinheiro
 		while (inicioutil != NULL) {
 			if (valoradd == 0) {//Só ver o saldo
@@ -486,7 +488,7 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 				while (iniciomeio != NULL) {
 					if (iniciomeio->codigo == cod)
 						if (inicioutil->saldo > iniciomeio->custo) {// verifica se tem saldo para pagar
-							mexersaldo(inicioutil, iniciomeio, 0, NULL);
+							mexersaldo(inicioutil, iniciomeio, 0, 0);
 							guardarhistorico(inicioutil, iniciomeio);
 							printf("Compra bem sucedida!\n");
 							return;
@@ -506,7 +508,7 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 }
 
 
-void mexersaldo(Utilizadores* util, Meio* meio, int sinal, int valorcarregado) {
+void mexersaldo(Utilizadores* util, Meio* meio, int sinal, float valorcarregado) {
 	if (sinal) {//adicionar o que o utilizador carregou de saldo
 		util->saldo += valorcarregado;
 		printf("\nSeu novo saldo é %.2f$\n", util->saldo);
