@@ -22,7 +22,7 @@ int existeMeio(Meio* inicio, int cod){//verifica se existe um meio com o codigo 
 Meio* inserirMeio(Meio* inicio, int cod, char tipo[], float bat, float aut,float cust, char geocod[]){
 	if (!existeMeio(inicio, cod))
 	{
-		Meio* novo = malloc(sizeof(struct registomeio));
+		Meio* novo = malloc(sizeof(struct registomeio));//alocação de memoria para um novo meio
 		if (novo != NULL)
 		{
 			novo->codigo = cod;
@@ -72,11 +72,11 @@ void mudarMeios(Meio* meio, int cod) {
 	int escolha = 1, choice;
 	Utilizadores* inicio;
 	inicio = meio;
-	for (; (i == 1 || i == 2) != 1;) {
-		if (meio == NULL)
+	for (; (i == 1 || i == 2) != 1;) {//loop for para chegar ao meio que queremos, para quando i for 1 ou 2
+		if (meio == NULL)//se chegou ao fim da lista, i é 2, mostra uma mensagem de erro e acaba a função
 			i = 2;
 		else {
-			if (meio->codigo == cod)
+			if (meio->codigo == cod)//se encontrar i é 1, realizando as alterações
 				i = 1;
 			else
 				meio = meio->seguinte;
@@ -89,10 +89,10 @@ void mudarMeios(Meio* meio, int cod) {
 	else {
 		while (escolha) {
 			printf("O que deseja mudar?\n1- Codigo\n2- Tipo\n3- Bateria\n4- Autonomia\n5- Custo\n6- Geocodigo\n0- Nada\n");
-			scanf("%d", &choice);
+			scanf("%d", &choice);//pergunta o que o utilizador quer fazaer
 			if (choice >= 0 && choice < 7) {
 				
-				if(choice == 1){
+				if(choice == 1){//para mudar o codigo, mas primeiramente verifica se já existe esse codigo, senão, não altera
 					printf("Codigo\n");
 					scanf("%d", &cod);
 					if (!(existeMeio(inicio, cod))) {
@@ -106,12 +106,12 @@ void mudarMeios(Meio* meio, int cod) {
 				}
 
 				else if(choice == 2){
-					printf("\nTipo: (trotinete/bicicleta)\n");
+					printf("\nTipo: (trotinete/bicicleta)\n");//pede o tipo, sendo que só pode escrever trotinete ou bicicleta
 					bool = 1;
 					while (bool) {
 						scanf("%s", tipo);
 						if ( (!(strcmp(tipo, "trotinete")) || (!(strcmp(tipo, "bicicleta")))))
-							bool = 0;
+							bool = 0;//se escrever certo sai do loop
 						else
 							printf("Digitou errado, escreva de novo:\n");
 					}
@@ -120,7 +120,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("Mudanca bem sucedida!\n");
 				}
 				
-				else if (choice == 3) {
+				else if (choice == 3) {//muda a bateria se for maior que 0
 					printf("\nBateria\n");
 					scanf("%f", &bat);
 					if (bat >= 0) {
@@ -132,7 +132,7 @@ void mudarMeios(Meio* meio, int cod) {
 						printf("Valor digitado errado!");
 				}
 			
-				else if(choice == 4){
+				else if(choice == 4){//muda a autonimia se for maior que 0
 					printf("\nAutonomia\n");
 					scanf("%f", &aut);
 					if (aut >= 0) {
@@ -144,7 +144,7 @@ void mudarMeios(Meio* meio, int cod) {
 						printf("Valor digitado errado!");
 				}
 				
-				else if(choice == 5){
+				else if(choice == 5){//muda o custo se for maior que 0
 					printf("\nCusto\n");
 					scanf("%f", &cust);
 					if (cust > 0) {
@@ -156,7 +156,7 @@ void mudarMeios(Meio* meio, int cod) {
 						printf("Valor digitado errado!");
 				}
 
-				else if (choice == 6){
+				else if (choice == 6){//muda o geocodigo
 					printf("\nGeocodigo\n");
 					scanf("%s", geocod);
 					system("cls");
@@ -164,11 +164,12 @@ void mudarMeios(Meio* meio, int cod) {
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}
-				else if (choice == 0)
+				else if (choice == 0)//se escolher 0, acaba a execução da função
 					return;
+
 				printf("Deseja mudar mais alguma coisa? (1/0)\n");
 				scanf("%d", &escolha);
-				system("cls");
+				system("cls");//pergunta se quer continuar se 0 acaba, se 1 pergunta de novo o que quer mudar
 			}
 		}
 	}
@@ -184,7 +185,7 @@ void BubbleSortMeios(Meio* inicio) {
 		while (atual->seguinte != NULL) {
 			seguinte = atual->seguinte;
 
-			if (atual->autonomia < seguinte->autonomia) { // <-- Comparação modificada
+			if (atual->autonomia < seguinte->autonomia) { // compara a autonomia do atual da lista e o seguinte, se for maior, muda todos os parametros de um com o outro
 				int auxcodigo = atual->codigo;
 				float auxbateria = atual->bateria;
 				float auxautonomia = atual->autonomia;
@@ -217,7 +218,7 @@ void BubbleSortMeios(Meio* inicio) {
 //Parte de adição, remoção e alteração de utilizadores
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-int existeUtil(Utilizadores* inicio, int NIF) {
+int existeUtil(Utilizadores* inicio, int NIF) {//verifica o NIF para ver se já existe
 	while (inicio != NULL)
 	{
 		if (inicio->NIF == NIF) return(1);
@@ -272,7 +273,7 @@ Utilizadores* removerUtil(Utilizadores* inicio, int NIF) {
 	}
 }
 
-void mudarUtils(Utilizadores* util, int NIF) {
+void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarMeios
 	int i = 0;
 	char nome[100], morada[150];
 	int escolha = 1,choice;
@@ -310,7 +311,7 @@ void mudarUtils(Utilizadores* util, int NIF) {
 					printf("\nNIF:\n");
 					scanf("%d", &NIF);
 					system("cls");
-					if (!(existeUtil(inicio, NIF))){
+					if (!(existeUtil(inicio, NIF))){//verifica se o NIF já existe
 						util->NIF = NIF;
 					printf("Mudanca bem sucedida!\n");
 					}
@@ -327,6 +328,7 @@ void mudarUtils(Utilizadores* util, int NIF) {
 				}
 				else if (choice == 0)
 					return;
+
 				printf("Deseja mudar mais alguma coisa? (1/0)\n");
 				scanf("%d", &escolha);
 				system("cls");
@@ -392,7 +394,7 @@ Administradores* removerAdmins(Administradores* inicio, int cod){
 	}
 }
 
-void mudarAdmins(Administradores* admin, int cod) {
+void mudarAdmins(Administradores* admin, int cod) {//mesmo pensamento da função mudarMeios
 	int i = 0, escolha = 1, choice;
 	char senha[20], nome[100];
 	Administradores* inicio;
@@ -420,7 +422,7 @@ void mudarAdmins(Administradores* admin, int cod) {
 				if (choice == 1) {
 					printf("Digite o codigo: \n");
 					scanf("%d", &cod);
-					if (!(existeAdmin(inicio, cod))) {
+					if (!(existeAdmin(inicio, cod))) {//verifica se já existe esse codigo
 						admin->codigo = cod;
 						system("cls");
 						printf("Mudanca bem sucedida\n");
@@ -462,6 +464,29 @@ void mudarAdmins(Administradores* admin, int cod) {
 //Manipulação de saldo
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/*
+Em vez de criar varias funçoes para realizar coisas similares, decidi colocar tudo numa só função, no qual os parametros valoradd e verificarsemaior servem para realizar diferentes funções
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+na função verificarsaldo temos:
+
+inicioutil, iniciomeio são o inicio das listas dos utilizadores e meios
+
+utilNIF e cod servem para conseguir chegar nas listas o meio e o utilizador certo
+
+valoradd serve para indicar que vamos adicionar saldo, se sim é utilizado a variavel carregarvalor, que é o valor digitado pelo utilizador
+
+verificarsemaior serve para verificar se o saldo do utilizador é maior que o preço do meio, se assim o for, realiza a compra
+
+-------------------------------------------------------------------------------------------------------------------------------------
+já na função mexersaldo temos os parametros sinal para realizar diferentes ações
+
+Se o sinal for 1, quer dizer que vamos adicionar saldo, usando assim a variavel anterior carregarvalor, que na função é valorcarregado
+
+Se o sinal for 0, quer dizer que vamos subtrair saldo, usando assim o valor do meio
+*/
+
+
 void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, float carregarvalor, int verificarsemaior) {
 	if (verificarsemaior == 0) {//Parte na qual o utilizador vê seu saldo e decide se quer adicionar dinheiro
 		while (inicioutil != NULL) {
@@ -484,14 +509,14 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 
 	else {//Parte do aluguel do meio
 		while (inicioutil != NULL) {
-			if (inicioutil->NIF == utilNIF) {
+			if (inicioutil->NIF == utilNIF) {//na lista vai até o utilizador certo
 				while (iniciomeio != NULL) {
-					if (iniciomeio->codigo == cod)
+					if (iniciomeio->codigo == cod)//na lista vai até o meio com o mesmo codigo
 						if (inicioutil->saldo > iniciomeio->custo) {// verifica se tem saldo para pagar
-							if(iniciomeio->alugado == 0){
+							if(iniciomeio->alugado == 0){//verifica se já está alugado, se nao, pode alugar
 								mexersaldo(inicioutil, iniciomeio, 0, 0);
-								iniciomeio->alugado = 1;
-								guardarhistorico(inicioutil, iniciomeio);
+								iniciomeio->alugado = 1;//marca o meio como alugado
+								guardarhistorico(inicioutil, iniciomeio);//guarda o alugamento num ficheiro bin
 								printf("Compra bem sucedida!\n");
 								return;
 							}

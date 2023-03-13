@@ -9,10 +9,11 @@
  /*
  ---------------------------------------------------------------------------------------------------------------------------
  pegar e guardar meios
+ ---------------------------------------------------------------------------------------------------------------------------
  */
 Meio* pegarregistomeios(Meio* inicio, FILE* bin) {
 	char linha[300];
-	while (fgets(linha, 300, bin) != NULL) {
+	while (fgets(linha, 300, bin) != NULL) {//enquanto a variavel linha, for diferente a NULL, sendo a linha uma linha do ficheiro.
 		Meio* novo = malloc(sizeof(struct registomeio));
 		sscanf(linha, "%d;%[^;];%d;%f;%f;%f;%s", &novo->codigo, novo->tipo, &novo->alugado, &novo->bateria, &novo->autonomia,&novo->custo, novo->geocodigo);
 		novo->alugado = 0;//para realização de teste e espera de uma solução
@@ -25,7 +26,7 @@ Meio* pegarregistomeios(Meio* inicio, FILE* bin) {
 void escreverbinmeios(Meio* inicio, FILE* bin) {
 
 	if (bin != NULL) {
-		while (inicio != NULL) {
+		while (inicio != NULL) {//guarda a cada linha as informações de cada meio até acabar a lista
 			fprintf(bin, "%d;%s;&d;%.2f;%.2f;%.2f;%s\n", inicio->codigo, inicio->tipo,inicio->alugado, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
 			inicio = inicio->seguinte;
 		}
@@ -37,6 +38,7 @@ void escreverbinmeios(Meio* inicio, FILE* bin) {
 /*
 ---------------------------------------------------------------------------------------------------------------------------
 pegar e guardar utilizadores
+---------------------------------------------------------------------------------------------------------------------------
 */
 Utilizadores* pegarregistoutil(Utilizadores* inicio, FILE* bin) {
 	char linha[300];
@@ -63,6 +65,7 @@ void escreverbinutil(Utilizadores* inicio, FILE* bin) {
 /*
 ---------------------------------------------------------------------------------------------------------------------------
 pegar e guardar admins
+---------------------------------------------------------------------------------------------------------------------------
 */
 
 Administradores* pegarregistoadmin(Administradores* inicio, FILE* bin) {
@@ -86,8 +89,11 @@ void escreverbinadmin(Administradores* inicio, FILE* bin) {
 		printf("Erro na execucao do ficheiro");
 }
 
-
-
+/*
+---------------------------------------------------------------------------------------------------------------------------
+guardar um alugamento num historico
+---------------------------------------------------------------------------------------------------------------------------
+*/
 
 void guardarhistorico(Utilizadores* util, Meio* meio) {
 	FILE* historico;
