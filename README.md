@@ -1,7 +1,7 @@
 ## ProjetoEDA
 ## Realização do projeto de Estrutura de Dados Avançados
 # Objetivo
-Este projeto gira em volta do desenvolvimento de uma solução permita agilizar a gestão (registo, partilha, utilização) de meios de mobilidade urbana num contexto de uma smart-city. A implementação da solução deverá considerar estruturas de dados dinâmicas, armazenamento em ficheiro, modularização e apresentar uma estruturação e documentação adequadas.
+Este projeto gira em volta do desenvolvimento de uma solução que permita agilizar a gestão (registo, partilha, utilização) de meios de mobilidade urbana num contexto de uma smart-city. A implementação da solução deve ter estruturas de dados dinâmicas, armazenamento em ficheiro, modularização e apresentar uma estruturação e documentação adequadas.
 
 # Fase 1
 Na fase 1, teve como desafios:
