@@ -15,7 +15,7 @@ Meio* pegarregistomeios(Meio* inicio, FILE* bin) {
 	while (fgets(linha, 300, bin) != NULL) {
 		Meio* novo = malloc(sizeof(struct registomeio));
 		sscanf(linha, "%d;%[^;];%d;%f;%f;%f;%s", &novo->codigo, novo->tipo, &novo->alugado, &novo->bateria, &novo->autonomia,&novo->custo, novo->geocodigo);
-		//novo->alugado = 0;//para realização de teste e espera de uma solução
+		novo->alugado = 0;//para realização de teste e espera de uma solução
 		novo->seguinte = inicio;
 		inicio = novo;
 	}

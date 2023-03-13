@@ -518,7 +518,7 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 void mexersaldo(Utilizadores* util, Meio* meio, int sinal, float valorcarregado) {
 	if (sinal) {//adicionar o que o utilizador carregou de saldo
 		util->saldo += valorcarregado;
-		printf("\nSeu novo saldo é %.2f$\n", util->saldo);
+		printf("\nSeu novo saldo e %.2f$\n", util->saldo);
 	}
 	else {//tirar o custo do meio do saldo
 		util->saldo -= meio->custo;
