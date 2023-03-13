@@ -4,6 +4,7 @@
 typedef struct registomeio {
 	int codigo;
 	char tipo[50];
+	int alugado;//1 se sim 0 se não
 	float bateria;
 	float autonomia;
 	float custo;

@@ -16,8 +16,12 @@
 */
 void listarmeios(Meio* inicio) {
 	while (inicio != NULL) {
-		printf("Codigo:%d Tipo:%s Bateria:%.2f\nAutonomia:%.2f Custo:%.2f$ geocodigo: %s\n", inicio->codigo, inicio->tipo, inicio->bateria,
-			inicio->autonomia, inicio->custo, inicio->geocodigo);
+		printf("Codigo:%d Tipo:%s Bateria:%.2f", inicio->codigo, inicio->tipo, inicio->bateria);
+		if (inicio->alugado == 1)
+			printf(" Alugado: Sim");
+		else
+			printf(" Alugado: Nao");
+		printf("\nAutonomia: % .2f Custo : % .2f$ geocodigo : % s\n", inicio->autonomia, inicio->custo, inicio->geocodigo);
 		printf("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-\n");
 		inicio = inicio->seguinte;
 	}

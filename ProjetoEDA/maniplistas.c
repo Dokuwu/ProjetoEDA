@@ -488,10 +488,17 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 				while (iniciomeio != NULL) {
 					if (iniciomeio->codigo == cod)
 						if (inicioutil->saldo > iniciomeio->custo) {// verifica se tem saldo para pagar
-							mexersaldo(inicioutil, iniciomeio, 0, 0);
-							guardarhistorico(inicioutil, iniciomeio);
-							printf("Compra bem sucedida!\n");
-							return;
+							if(iniciomeio->alugado == 0){
+								mexersaldo(inicioutil, iniciomeio, 0, 0);
+								iniciomeio->alugado = 1;
+								guardarhistorico(inicioutil, iniciomeio);
+								printf("Compra bem sucedida!\n");
+								return;
+							}
+							else {
+								printf("O meio ja esta alugado!\n");
+								return;
+							}
 						}
 						else {
 							printf("Seu saldo é menor que o custo do meio\n");
@@ -511,7 +518,7 @@ void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int
 void mexersaldo(Utilizadores* util, Meio* meio, int sinal, float valorcarregado) {
 	if (sinal) {//adicionar o que o utilizador carregou de saldo
 		util->saldo += valorcarregado;
-		printf("\nSeu novo saldo é %.2f$\n", util->saldo);
+		printf("\nSeu novo saldo e %.2f$\n", util->saldo);
 	}
 	else {//tirar o custo do meio do saldo
 		util->saldo -= meio->custo;
