@@ -32,6 +32,7 @@ Meio* inserirMeio(Meio* inicio, int cod, char tipo[], float bat, float aut,float
 			novo->custo = cust;
 			strcpy(novo->geocodigo,geocod);
 			novo->seguinte = inicio;
+			novo->alugado = 0;
 			return(novo);
 		}
 	}
@@ -164,9 +165,10 @@ void mudarMeios(Meio* meio, int cod) {
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}
-				else if (choice == 0)//se escolher 0, acaba a execução da função
+				else if (choice == 0) {//se escolher 0, acaba a execução da função
+					BubbleSortMeios(inicio);
 					return;
-
+				}
 				printf("Deseja mudar mais alguma coisa? (1/0)\n");
 				scanf("%d", &escolha);
 				system("cls");//pergunta se quer continuar se 0 acaba, se 1 pergunta de novo o que quer mudar
