@@ -27,7 +27,7 @@ void escreverbinmeios(Meio* inicio, FILE* bin) {
 
 	if (bin != NULL) {
 		while (inicio != NULL) {//guarda a cada linha as informações de cada meio até acabar a lista
-			fprintf(bin, "%d;%s;&d;%.2f;%.2f;%.2f;%s\n", inicio->codigo, inicio->tipo,inicio->alugado, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
+			fprintf(bin, "%d;%s;%d;%.2f;%.2f;%.2f;%s\n", inicio->codigo, inicio->tipo,inicio->alugado, inicio->bateria, inicio->autonomia, inicio->custo, inicio->geocodigo);
 			inicio = inicio->seguinte;
 		}
 	}

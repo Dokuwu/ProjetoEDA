@@ -173,6 +173,7 @@ void mudarMeios(Meio* meio, int cod) {
 			}
 		}
 	}
+	BubbleSortMeios(inicio);
 }
 
 void BubbleSortMeios(Meio* inicio) {
