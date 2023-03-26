@@ -87,12 +87,13 @@ int checkloginutil(Utilizadores* inicio, char nome[50], int NIF) {//mesma ideia 
 }
 
 int main() {
+
 	FILE* meiosb,*adminsb,*utilsb,*historicaluguel;
 	Meio* meios = NULL;
 	Administradores* admins = NULL;
 	Utilizadores* utils = NULL;
 	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF, logcodadmin , admincod;
-	float bat, aut, cust, utilsaldo,adicionarsaldo;
+	float bat, aut, cust, utilsaldo,addsaldo;
 	char nickname[20], password[20], tipo[20], geocod[50],adminnome[20],adminsenha[20],utilnome[60],utilmorada[100];
 	//parte de leitura dos ficheiros com os dados dos meios,utilizadores e admins
 	meiosb = fopen("meios.bin", "rb");
@@ -329,13 +330,13 @@ int main() {
 
 					//ver Saldo
 					if (choice == 1) {
-						verificarsaldo(utils, utilNIF,NULL, NULL, 0, 0,NULL);//NULL serve para as variaveis presentes na função que não vao ser precisas e o primeiro 0 serve para dizer que não é para adicionar saldo
+						mostrarsaldo(utils, utilNIF);
 						printf("Quer adicionar saldo? (1/0)\n");
-						scanf("%f", &adicionarsaldo);
-						if (adicionarsaldo){
+						scanf("%f", &addsaldo);
+						if (addsaldo){
 							printf("Digite o valor a adicionar:\n");
-							scanf("%f", &adicionarsaldo);
-							verificarsaldo(utils, utilNIF, NULL, NULL, 1, adicionarsaldo, NULL);
+							scanf("%f", &addsaldo);
+							adicionarsaldo(utils, utilNIF, addsaldo);
 						}
 					}
 
@@ -355,7 +356,7 @@ int main() {
 					else if (choice == 4) {//parte para alugar meio
 						printf("Escreva o codigo do meio:");
 						scanf("%d", &cod);
-						verificarsaldo(utils, utilNIF, meios, cod, NULL, 0, 1);//como o ultimo parametro está 1 ele vai saber que é pra verificar o saldo se é maior que o custo
+						aluguelmeio(utils,utilNIF,meios,cod);
 					}
 					//Logout
 					else if (choice == 5) {
@@ -393,5 +394,5 @@ int main() {
 	escreverbinutil(utils, utilsb);
 	fclose(utilsb);
 
-	return 1;
+	return 0;
 }

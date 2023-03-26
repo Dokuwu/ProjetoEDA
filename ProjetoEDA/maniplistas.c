@@ -467,88 +467,56 @@ void mudarAdmins(Administradores* admin, int cod) {//mesmo pensamento da função 
 //Manipulação de saldo
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/*
-Em vez de criar varias funçoes para realizar coisas similares, decidi colocar tudo numa só função, no qual os parametros valoradd e verificarsemaior servem para realizar diferentes funções
-
--------------------------------------------------------------------------------------------------------------------------------------------
-na função verificarsaldo temos:
-
-inicioutil, iniciomeio são o inicio das listas dos utilizadores e meios
-
-utilNIF e cod servem para conseguir chegar nas listas o meio e o utilizador certo
-
-valoradd serve para indicar que vamos adicionar saldo, se sim é utilizado a variavel carregarvalor, que é o valor digitado pelo utilizador
-
-verificarsemaior serve para verificar se o saldo do utilizador é maior que o preço do meio, se assim o for, realiza a compra
-
--------------------------------------------------------------------------------------------------------------------------------------
-já na função mexersaldo temos os parametros sinal para realizar diferentes ações
-
-Se o sinal for 1, quer dizer que vamos adicionar saldo, usando assim a variavel anterior carregarvalor, que na função é valorcarregado
-
-Se o sinal for 0, quer dizer que vamos subtrair saldo, usando assim o valor do meio
-*/
-
-
-void verificarsaldo(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod, int valoradd, float carregarvalor, int verificarsemaior) {
-	if (verificarsemaior == 0) {//Parte na qual o utilizador vê seu saldo e decide se quer adicionar dinheiro
-		while (inicioutil != NULL) {
-			if (valoradd == 0) {//Só ver o saldo
-				if (inicioutil->NIF == utilNIF) {
-					printf("Seu saldo: %.2f$\n", inicioutil->saldo);
-					return;
-				}
-				inicioutil = inicioutil->seguinte;
-			}
-			else {
-				if (inicioutil->NIF == utilNIF) { // adicionar saldo
-					mexersaldo(inicioutil, NULL, valoradd, carregarvalor);
-					return;
-				}
-				inicioutil = inicioutil->seguinte;
-			}
+void mostrarsaldo(Utilizadores* util, int utilNIF) {
+	while (util != NULL) {
+		if (util->NIF == utilNIF) {
+			printf("Seu saldo: %.2f$\n", util->saldo);
+			return;
 		}
-	}
-
-	else {//Parte do aluguel do meio
-		while (inicioutil != NULL) {
-			if (inicioutil->NIF == utilNIF) {//na lista vai até o utilizador certo
-				while (iniciomeio != NULL) {
-					if (iniciomeio->codigo == cod)//na lista vai até o meio com o mesmo codigo
-						if (inicioutil->saldo > iniciomeio->custo) {// verifica se tem saldo para pagar
-							if(iniciomeio->alugado == 0){//verifica se já está alugado, se nao, pode alugar
-								mexersaldo(inicioutil, iniciomeio, 0, 0);
-								iniciomeio->alugado = 1;//marca o meio como alugado
-								guardarhistorico(inicioutil, iniciomeio);//guarda o alugamento num ficheiro bin
-								printf("Compra bem sucedida!\n");
-								return;
-							}
-							else {
-								printf("O meio ja esta alugado!\n");
-								return;
-							}
-						}
-						else {
-							printf("Seu saldo é menor que o custo do meio\n");
-							return;
-						}
-					iniciomeio = iniciomeio->seguinte;
-				}
-				printf("Nao foi achado um meio com esse codigo.\n");//ao percorrer o while, se não encontrar o meio retorna isto
-				return;
-			}
-			inicioutil = inicioutil->seguinte;
-		}
+		util = util->seguinte;
 	}
 }
 
+void adicionarsaldo(Utilizadores* util, int utilNIF, float valorcarregado) {
+	while (util != NULL) {
 
-void mexersaldo(Utilizadores* util, Meio* meio, int sinal, float valorcarregado) {
-	if (sinal) {//adicionar o que o utilizador carregou de saldo
-		util->saldo += valorcarregado;
-		printf("\nSeu novo saldo e %.2f$\n", util->saldo);
+		if (util->NIF == utilNIF) {
+			util->saldo += valorcarregado;
+			printf("\nSeu novo saldo e %.2f$\n", util->saldo);
+		}
+		util = util->seguinte;
+
 	}
-	else {//tirar o custo do meio do saldo
-		util->saldo -= meio->custo;
+}
+
+void aluguelmeio(Utilizadores* inicioutil, int utilNIF, Meio* iniciomeio, int cod) {
+
+	while (inicioutil != NULL) {
+		if (inicioutil->NIF == utilNIF) {//na lista vai até o utilizador certo
+			while (iniciomeio != NULL) {
+				if (iniciomeio->codigo == cod)//na lista vai até o meio com o mesmo codigo
+					if (inicioutil->saldo > iniciomeio->custo) {// verifica se tem saldo para pagar
+						if (iniciomeio->alugado == 0) {//verifica se já está alugado, se nao, pode alugar
+							inicioutil->saldo -= iniciomeio->custo;
+							iniciomeio->alugado = 1;//marca o meio como alugado
+							guardarhistorico(inicioutil, iniciomeio);//guarda o alugamento num ficheiro bin
+							printf("Compra bem sucedida!\n");
+							return;
+						}
+						else {
+							printf("O meio ja esta alugado!\n");
+							return;
+						}
+					}
+					else {
+						printf("Seu saldo é menor que o custo do meio\n");
+						return;
+					}
+				iniciomeio = iniciomeio->seguinte;
+			}
+			printf("Nao foi achado um meio com esse codigo.\n");//ao percorrer o while, se não encontrar o meio retorna isto
+			return;
+		}
+		inicioutil = inicioutil->seguinte;
 	}
 }
