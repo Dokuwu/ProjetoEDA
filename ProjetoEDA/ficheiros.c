@@ -44,7 +44,7 @@ Utilizadores* pegarregistoutil(Utilizadores* inicio, FILE* bin) {
 	char linha[300];
 	while (fgets(linha, 300, bin) != NULL) {
 		Utilizadores* novo = malloc(sizeof(struct registoutil));
-		sscanf(linha, "%[^;];%[^;];%d;%f", novo->nome, novo->morada, &novo->NIF, &novo->saldo);
+		sscanf(linha, "%[^;];%[^;];%d;%f;%s", novo->nome, novo->morada, &novo->NIF, &novo->saldo, novo->geocodigo);
 		novo->seguinte = inicio;
 		inicio = novo;
 	}
@@ -55,7 +55,7 @@ void escreverbinutil(Utilizadores* inicio, FILE* bin) {
 
 	if (bin != NULL) {
 		while (inicio != NULL) {
-			fprintf(bin, "%s;%s;%d;%.2f\n", inicio->nome, inicio->morada, inicio->NIF, inicio->saldo);
+			fprintf(bin, "%s;%s;%d;%.2f;%s\n", inicio->nome, inicio->morada, inicio->NIF, inicio->saldo,inicio->geocodigo);
 			inicio = inicio->seguinte;
 		}
 	}
