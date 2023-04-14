@@ -15,53 +15,6 @@
 8.sim| Listagem dos meios de mobilidade elétrica existentes numa localização com determinado geocódigo.
 */
 
-void listarmeios(Meio* inicio) {//funcao para mostrar os meios
-	while (inicio != NULL) {
-		printf("Codigo:%d Tipo:%s Bateria:%.2f", inicio->codigo, inicio->tipo, inicio->bateria);
-		if (inicio->alugado == 1)//se estiver alugado mostra que sim senão mostra que nao
-			printf(" Alugado: Sim");
-		else
-			printf(" Alugado: Nao");
-		printf("\nAutonomia: %.2f Custo : %.2f$ geocodigo : %s\n", inicio->autonomia, inicio->custo, inicio->geocodigo);
-		printf("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-\n");
-		inicio = inicio->seguinte;
-	}
-	printf("\n\n\n");
-}
-
-void listarmeiosgeocod(Meio* inicio, char geocod[]) {//lista os meios pelo geocodigo
-	while (inicio != NULL) {
-		if(!(strcmp(inicio->geocodigo,geocod))){//Verifica se o geocodigo é o mesmo
-			printf("Codigo:%d | Tipo:%s | Bateria:%.2f |", inicio->codigo, inicio->tipo, inicio->bateria);
-			if (inicio->alugado == 1)//se estiver alugado mostra que sim senão mostra que nao
-				printf(" Alugado: Sim");
-			else
-				printf(" Alugado: Nao");
-			printf("\nAutonomia: %.2f | Custo : %.2f$ | geocodigo : %s\n", inicio->autonomia, inicio->custo, inicio->geocodigo);
-			printf("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-\n");
-		}
-		inicio = inicio->seguinte;
-	}
-	printf("\n\n\n");
-}
-
-
-void listaradmins(Administradores* inicio) {
-	while (inicio != NULL) {
-		printf("Codigo: %d | Nome: %s | Senha: %s\n",inicio->codigo, inicio->nome, inicio->senha);
-		inicio = inicio->seguinte;
-	}
-	printf("\n\n\n");
-}
-
-void listarutil(Utilizadores* inicio) {
-	while (inicio != NULL) {
-		printf("Nome: %s | Morada: %s | NIF: %d | Saldo: %.2f\n", inicio->nome, inicio->morada, inicio->NIF, inicio->saldo);
-		inicio = inicio->seguinte;
-	}
-	printf("\n\n\n");
-}
-
 int checkloginadmin(Administradores* inicio, int codigo, char senha[20]) {//verifica a parte de login para admin
 	while (inicio != NULL) {
 		if ((inicio->codigo == codigo && !(strcmp(inicio->senha, senha)))) {//se a senha e o codigo for o mesmo avança para a frente
@@ -88,10 +41,11 @@ int checkloginutil(Utilizadores* inicio, char nome[50], int NIF) {//mesma ideia 
 
 int main() {
 
-	FILE* meiosb,*adminsb,*utilsb,*historicaluguel;
+	FILE* meiosb,*adminsb,*utilsb,*historicaluguel,*grafob;
 	Meio* meios = NULL;
 	Administradores* admins = NULL;
 	Utilizadores* utils = NULL;
+	Grafo* grafo = NULL;
 	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF, logcodadmin , admincod;
 	float bat, aut, cust, utilsaldo,addsaldo;
 	char nickname[20], password[20], tipo[20], geocod[50],adminnome[20],adminsenha[20],utilnome[60],utilmorada[100];
@@ -106,6 +60,9 @@ int main() {
 	utils = pegarregistoutil(utils, utilsb);
 	fclose(utilsb);
 	BubbleSortMeios(meios);
+	grafob = fopen("grafo.bin", "rb");
+	grafo = pegarregistografo(grafo, grafob);
+	fclose(grafob);
 
 	login = 3;
 	while(login <= 3 && login > 0){//inicio do programa, no qual pergunta se quer fazer login como admin ou util, se login for 0, acaba o programa
@@ -278,6 +235,7 @@ int main() {
 						listarmeios(meios);
 						listarutil(utils);
 						listaradmins(admins);
+						listargrafo(grafo);
 					}
 
 

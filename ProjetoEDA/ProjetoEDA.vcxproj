@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ficheiros.c" />
+    <ClCompile Include="grafos.c" />
+    <ClCompile Include="listarcoisas.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="maniplistas.c" />
   </ItemGroup>

@@ -18,6 +18,7 @@ typedef struct registoutil {
 	char morada[200];
 	int NIF;
 	float saldo;
+	char geocodigo[100];
 	struct registoutil* seguinte;
 } Utilizadores;
 
@@ -65,3 +66,32 @@ void mostrarsaldo(Utilizadores* util, int utilNIF);
 void adicionarsaldo(Utilizadores* util, int utilNIF, float valorcarregado);
 void aluguelmeio(Utilizadores* util, int utilNIF, Meio* iniciomeio, int cod);
 void guardarhistorico(Utilizadores* util, Meio* meio);
+
+//Listar coisas
+
+void listarmeios(Meio* inicio);
+void listarmeiosgeocod(Meio* inicio, char geocod[]);
+void listaradmins(Administradores* inicio);
+void listarutil(Utilizadores* inicio);
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//										FASE 2 GRAFOS
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+typedef struct registoadjacentes {
+	char geocodigo[100];
+	float peso;
+	struct Adjacentes* seguinte;
+} Adjacentes;
+
+
+typedef struct registovertices {
+	char geocodigo[100];
+	Adjacentes* adjacente;
+	struct Lista* seguinte;
+} Grafo;
+
+
+void listargrafo(Grafo* inicio);
+Grafo* pegarregistografo(Grafo* inicio, FILE* bin);
