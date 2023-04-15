@@ -89,9 +89,13 @@ typedef struct registoadjacentes {
 typedef struct registovertices {
 	char geocodigo[100];
 	Adjacentes* adjacente;
+	Meio* meios;
+	Utilizadores* utils;
 	struct Lista* seguinte;
 } Grafo;
 
 
 void listargrafo(Grafo* inicio);
 Grafo* pegarregistografo(Grafo* inicio, FILE* bin);
+void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo);
+void fixarutilsvertices(Utilizadores* inicioutils, Grafo* iniciografo);

@@ -54,7 +54,7 @@ void listargrafo(Grafo* inicio) {
 	printf("Os dados do grafo:\n\n");
 
 	while (inicio != NULL) {
-		printf("%s\n", inicio->geocodigo);
+		printf("\n~~~~~~~~~~~~Vertice: %s~~~~~~~~~~~~\n", inicio->geocodigo);
 
 		if (inicio->adjacente == NULL) {
 			printf("Este vertice nao tem adjacentes.\n");
@@ -63,12 +63,22 @@ void listargrafo(Grafo* inicio) {
 		else{
 
 			while (inicio->adjacente != NULL) {
-				printf("adjacente: %s peso: %.2f\n", inicio->adjacente->geocodigo, inicio->adjacente->peso);
+				printf("\nadjacente: %s peso: %.2f", inicio->adjacente->geocodigo, inicio->adjacente->peso);
 				inicio->adjacente = inicio->adjacente->seguinte;
 			}
 
 		}
 
+		if (inicio->meios == NULL) {
+
+		}
+		else {
+			while(inicio->meios != NULL){
+				printf("\nCodigo meio no vertice: %d", inicio->meios->codigo);
+				inicio->meios = inicio->meios->seguinte;
+			}
+		}
+		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		inicio = inicio->seguinte;
 	}
 }

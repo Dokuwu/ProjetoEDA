@@ -4,6 +4,9 @@
 #include <string.h>
 #include "ficheiroslistas.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//						Criação e guardar o grafo
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 	char linha[200];
 	char* token;
@@ -25,6 +28,8 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 				Grafo* novo = malloc(sizeof(struct registovertices));
 				strcpy(novo->geocodigo, token);
 				novo->adjacente = NULL;
+				novo->meios = NULL;
+				novo->utils = NULL;
 				token = strtok(NULL, ";");
 				novo->seguinte = inicio;
 				inicio = novo;
@@ -61,4 +66,33 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 	}
 
 	return inicio;
+}
+
+void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo) {
+	Grafo* vertices = iniciografo;
+	Meio* meioanterior;
+	while (iniciomeio != NULL) {
+			while (strcmp(vertices->geocodigo,iniciomeio->geocodigo)) {
+				vertices = vertices->seguinte;
+			}
+			if(vertices != NULL){
+				Meio* novomeio = malloc(sizeof(struct registomeio));
+				novomeio->custo = iniciomeio->custo;
+				novomeio->codigo = iniciomeio->codigo;
+				novomeio->bateria = iniciomeio->bateria;
+				novomeio->autonomia = iniciomeio->autonomia;
+				novomeio->alugado = iniciomeio->alugado;
+				strcpy(novomeio->tipo, iniciomeio->tipo);
+				strcpy(novomeio->geocodigo, iniciomeio->geocodigo);
+				novomeio->seguinte = vertices->meios;
+				vertices->meios = novomeio;
+			}
+			vertices = iniciografo;
+			iniciomeio = iniciomeio->seguinte;
+	}
+	
+}
+
+void fixarutilsvertices(Utilizadores* inicioutils, Grafo* iniciografo) {
+
 }

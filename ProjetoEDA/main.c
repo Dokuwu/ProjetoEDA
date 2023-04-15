@@ -63,6 +63,9 @@ int main() {
 	grafob = fopen("grafo.bin", "rb");
 	grafo = pegarregistografo(grafo, grafob);
 	fclose(grafob);
+	fixarmeiosvertices(meios, grafo);
+	fixarutilsvertices(utils, grafo);
+
 
 	login = 3;
 	while(login <= 3 && login > 0){//inicio do programa, no qual pergunta se quer fazer login como admin ou util, se login for 0, acaba o programa

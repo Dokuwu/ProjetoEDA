@@ -193,6 +193,7 @@ void BubbleSortMeios(Meio* inicio) {
 				float auxbateria = atual->bateria;
 				float auxautonomia = atual->autonomia;
 				float auxcusto = atual->custo;
+				int auxalugado = atual->alugado;
 				char auxtipo[50],auxgeocod[50];
 				strcpy(auxtipo, atual->tipo);
 				strcpy(auxgeocod, atual->geocodigo);
@@ -201,6 +202,7 @@ void BubbleSortMeios(Meio* inicio) {
 				atual->codigo = seguinte->codigo;
 				atual->bateria = seguinte->bateria;
 				atual->autonomia = seguinte->autonomia;
+				atual->alugado = seguinte->alugado;
 				strcpy(atual->tipo, seguinte->tipo);
 				strcpy(atual->geocodigo, seguinte->geocodigo);
 
@@ -208,6 +210,7 @@ void BubbleSortMeios(Meio* inicio) {
 				seguinte->codigo = auxcodigo;
 				seguinte->bateria = auxbateria;
 				seguinte->autonomia = auxautonomia;
+				seguinte->alugado = auxalugado;
 				strcpy(seguinte->tipo, auxtipo);
 				strcpy(seguinte->geocodigo, auxgeocod);
 
