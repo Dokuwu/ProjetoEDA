@@ -96,3 +96,46 @@ void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo) {
 void fixarutilsvertices(Utilizadores* inicioutils, Grafo* iniciografo) {
 
 }
+
+int verificargeocodigo(Grafo* grafo, char* geocodigo) {
+	while (grafo != NULL) {
+		if (!(strcmp(grafo->geocodigo, geocodigo))) return 1;
+		grafo = grafo->seguinte;
+	}
+	return 0;
+}
+
+Grafo* criarvertice(Grafo* inicio, char* geocodigo) {
+	Grafo* novo = malloc(sizeof(struct registovertices));
+	strcpy(novo->geocodigo, geocodigo);
+	novo->adjacente = NULL;
+	novo->meios = NULL;
+	novo->utils = NULL;
+	novo->seguinte = inicio;
+	inicio = novo;
+	return inicio;
+}
+
+int adicionaradjacentes(Grafo* grafo, char* geocodigo, char* geocodigoadj, float peso) {
+	int bool;
+	bool = verificargeocodigo(grafo, geocodigoadj);
+	if (!(bool)) return 1;
+
+	while ((grafo != NULL) && strcmp(grafo->geocodigo, geocodigo)) {
+		grafo = grafo->seguinte;
+	}
+	Adjacentes* verificador = grafo->adjacente;
+	while (((verificador != NULL) && strcmp(verificador->geocodigo, geocodigoadj))){
+		verificador = verificador->seguinte;
+	}
+	if (verificador != NULL) return 1;
+
+	Adjacentes* novo = malloc(sizeof(struct registoadjacentes));
+	strcpy(novo->geocodigo, geocodigoadj);
+	novo->peso = peso;
+	novo->seguinte = grafo->adjacente;
+	grafo->adjacente = novo;
+	return 0;
+
+
+}

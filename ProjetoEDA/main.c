@@ -46,9 +46,9 @@ int main() {
 	Administradores* admins = NULL;
 	Utilizadores* utils = NULL;
 	Grafo* grafo = NULL;
-	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF, logcodadmin , admincod;
-	float bat, aut, cust, utilsaldo,addsaldo;
-	char nickname[20], password[20], tipo[20], geocod[50],adminnome[20],adminsenha[20],utilnome[60],utilmorada[100];
+	int run = 1, bool = 1, exec = 1, alreadylogged = 0, login, choice, utiladminmeio, cod, utilNIF, logcodadmin , admincod, addadj = 1;
+	float bat, aut, cust, utilsaldo,addsaldo, peso;
+	char nickname[20], password[20], tipo[20], geocod[50],geocodadj[50], adminnome[20], adminsenha[20], utilnome[60], utilmorada[100];
 	//parte de leitura dos ficheiros com os dados dos meios,utilizadores e admins
 	meiosb = fopen("meios.bin", "rb");
 	meios = pegarregistomeios(meios, meiosb);
@@ -174,8 +174,29 @@ int main() {
 							system("cls");
 							//verifica se já existe um meio com esse codigo e se todos os numeros são maiores ou igual a 0
 							if(!(existeMeio(meios, cod)) &&bat >= 0 && aut >=0 && cust >= 0){
+
 								meios = inserirMeio(meios, cod, tipo, bat, aut, cust, geocod);
 								BubbleSortMeios(meios);
+								if (!(verificargeocodigo(grafo, geocod))) {
+									printf("Geocodigo novo detetado, precisa criar as informacoes sobre ele.\n");
+									grafo = criarvertice(grafo, geocod);
+									fixarmeiosvertices(meios, grafo);
+
+									while (addadj) {
+										printf("Deseja adicionar adjacente?\n");
+										scanf("%d", &addadj);
+										if (addadj) {
+											printf("Geocodigo: ");
+											getchar();
+											scanf("%s", geocodadj);
+											printf("Peso: ");
+											scanf("%f", &peso);
+											bool = adicionaradjacentes(grafo,geocod, geocodadj, peso);
+											system("cls");
+											if (bool) printf("Geocodigo ja e adjacente ou nao existe esse geocodigo!\n");
+										}
+									}
+								}
 								printf("Adicionado com sucesso! ");
 							}
 							else {
