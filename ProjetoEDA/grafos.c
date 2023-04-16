@@ -7,6 +7,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //						Criação e guardar o grafo
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 	char linha[200];
 	char* token;
@@ -66,6 +67,7 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 	}
 
 	return inicio;
+
 }
 
 void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo) {
@@ -136,6 +138,5 @@ int adicionaradjacentes(Grafo* grafo, char* geocodigo, char* geocodigoadj, float
 	novo->seguinte = grafo->adjacente;
 	grafo->adjacente = novo;
 	return 0;
-
 
 }
