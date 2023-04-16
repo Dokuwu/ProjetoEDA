@@ -68,12 +68,12 @@ Meio* removerMeio(Meio* inicio, int cod){
 	}
 }
 
-void mudarMeios(Meio* meio, int cod) {
+void mudarMeios(Meio* meio, int cod, Grafo* grafo) {
 	int i = 0, bool;
 	float bat, aut, cust;
 	char tipo[20], geocod[100];
 	int escolha = 1, choice;
-	Utilizadores* inicio;
+	Meio* inicio;
 	inicio = meio;
 	for (; (i == 1 || i == 2) != 1;) {//loop for para chegar ao meio que queremos, para quando i for 1 ou 2
 		if (meio == NULL)//se chegou ao fim da lista, i é 2, mostra uma mensagem de erro e acaba a função
@@ -86,7 +86,7 @@ void mudarMeios(Meio* meio, int cod) {
 		}
 	}
 	if (i == 2) {
-		printf("\nNao foi possivel encontrar correspondencia a esse NIF.\n");
+		printf("\nNao foi possivel encontrar correspondencia a esse codigo.\n");
 		return;
 	}
 	else {
@@ -99,6 +99,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("Codigo\n");
 					scanf("%d", &cod);
 					if (!(existeMeio(inicio, cod))) {
+						mudarcodmeiovertice(grafo,meio,cod);
 						meio->codigo = cod;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -118,6 +119,7 @@ void mudarMeios(Meio* meio, int cod) {
 						else
 							printf("Digitou errado, escreva de novo:\n");
 					}
+					mudartipomeiovertice(grafo,meio,tipo);
 					strcpy(meio->tipo, tipo);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
@@ -127,6 +129,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("\nBateria\n");
 					scanf("%f", &bat);
 					if (bat >= 0) {
+						mudarbatautcustvertice(grafo, meio, choice, bat);
 						meio->bateria = bat;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -139,6 +142,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("\nAutonomia\n");
 					scanf("%f", &aut);
 					if (aut >= 0) {
+						mudarbatautcustvertice(grafo, meio, choice, aut);
 						meio->autonomia = aut;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -151,6 +155,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("\nCusto\n");
 					scanf("%f", &cust);
 					if (cust > 0) {
+						mudarbatautcustvertice(grafo, meio, choice, cust, inicio);
 						meio->custo = cust;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -164,6 +169,7 @@ void mudarMeios(Meio* meio, int cod) {
 					scanf("%s", geocod);
 					system("cls");
 					strcpy(meio->geocodigo, geocod);
+					fixarmeiosvertices(inicio, grafo);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}

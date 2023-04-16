@@ -3,16 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ficheiroslistas.h"
+/*
+SIM leitura de bin com informação do grafo
+guardar informação do grafo
+SIM criação de grafo
+SIM adição de adjacentes
+SIM adição da conexão dos meios
+SIM remoção da conexão dos meios
+alteracão dos dados na conexão dos meios
+adição da conexão dos utils
+remoção da conexão dos utils
+alteracão dos dados na conexão dos utils
 
-/* checklist:
-1.sim| Definição de uma estrutura de dados dinâmica (a validar previamente com o docente), para a representação dos meios de mobilidade elétrica, clientes e gestores;
-2.sim| Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados);
-3.sim| Inserção de novos dados (cliente/gestor/meio de mobilidade elétrica);
-4.sim| Remoção de determinados dados (cliente/gestor/meio de mobilidade elétrica);
-5.sim| Alteração de determinados dados (cliente/gestor/meio de mobilidade elétrica);
-6.sim| Registo do aluguer de um determinado meio de mobilidade elétrica;
-7.sim| Listagem dos meios de mobilidade elétrica por ordem decrescente de autonomia;
-8.sim| Listagem dos meios de mobilidade elétrica existentes numa localização com determinado geocódigo.
 */
 
 int checkloginadmin(Administradores* inicio, int codigo, char senha[20]) {//verifica a parte de login para admin
@@ -251,17 +253,18 @@ int main() {
 						else if (utiladminmeio == 3) {//meio
 							printf("Digite o codigo do meio de que quer mudar as informacoes: ");
 							scanf("%d", &cod);
-							mudarMeios(meios,cod);
+							mudarMeios(meios,cod, grafo);
 						}
 					}
 
-
-					else if (choice == 4) {//Lista toda a informação
+					//Lista toda a informação
+					else if (choice == 4) {
 						listarmeios(meios);
 						listarutil(utils);
 						listaradmins(admins);
 						listargrafo(grafo);
 					}
+
 					//adicionar vertice
 					else if (choice == 5) {
 						printf("Digite o geocodigo que quer adicionar\n");

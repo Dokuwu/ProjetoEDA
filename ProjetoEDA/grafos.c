@@ -73,24 +73,33 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo) {
 	Grafo* vertices = iniciografo;
 	Meio* meioanterior;
+	while (vertices != NULL) { // para libertar as listas anteriormentes criadas, depois de alguma alteração do geocodigo de um meio
+		while (vertices->meios != NULL) {
+			meioanterior = vertices->meios;
+			vertices->meios = vertices->meios->seguinte;
+			free(meioanterior);
+		}
+		vertices = vertices->seguinte;
+	}
+	vertices = iniciografo;
 	while (iniciomeio != NULL) {
-			while (strcmp(vertices->geocodigo,iniciomeio->geocodigo)) {
-				vertices = vertices->seguinte;
-			}
-			if(vertices != NULL){
-				Meio* novomeio = malloc(sizeof(struct registomeio));
-				novomeio->custo = iniciomeio->custo;
-				novomeio->codigo = iniciomeio->codigo;
-				novomeio->bateria = iniciomeio->bateria;
-				novomeio->autonomia = iniciomeio->autonomia;
-				novomeio->alugado = iniciomeio->alugado;
-				strcpy(novomeio->tipo, iniciomeio->tipo);
-				strcpy(novomeio->geocodigo, iniciomeio->geocodigo);
-				novomeio->seguinte = vertices->meios;
-				vertices->meios = novomeio;
-			}
-			vertices = iniciografo;
-			iniciomeio = iniciomeio->seguinte;
+		while (strcmp(vertices->geocodigo,iniciomeio->geocodigo)) {
+			vertices = vertices->seguinte;
+		}
+		if (vertices != NULL) {
+			Meio* novomeio = malloc(sizeof(struct registomeio));
+			novomeio->custo = iniciomeio->custo;
+			novomeio->codigo = iniciomeio->codigo;
+			novomeio->bateria = iniciomeio->bateria;
+			novomeio->autonomia = iniciomeio->autonomia;
+			novomeio->alugado = iniciomeio->alugado;
+			strcpy(novomeio->tipo, iniciomeio->tipo);
+			strcpy(novomeio->geocodigo, iniciomeio->geocodigo);
+			novomeio->seguinte = vertices->meios;
+			vertices->meios = novomeio;
+		}
+		vertices = iniciografo;
+		iniciomeio = iniciomeio->seguinte;
 	}
 	
 }
@@ -153,6 +162,7 @@ void removermeiovertice(Grafo* grafo,Meio* meio, int cod) {
 	//nao necessita verificação se grafo é null pois temos sempre a certeza que existe um vertice com esse geocodigo
 	atual = grafo->meios;
 	anterior = grafo->meios;
+	aux = grafo->meios;
 	if (atual->codigo == cod) // remoção do 1º registo
 	{
 		aux = atual->seguinte;
@@ -172,8 +182,48 @@ void removermeiovertice(Grafo* grafo,Meio* meio, int cod) {
 		{
 			anterior->seguinte = atual->seguinte;
 			free(atual);
-			grafo->meios = anterior;
+			grafo->meios = aux;
 		}
 	}
 
+}
+
+void mudarcodmeiovertice(Grafo* grafo, Meio* meio, int codnovo) {
+	Meio* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, meio->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->meios;
+	while ((grafo->meios != NULL) && (grafo->meios->codigo != meio->codigo)) grafo->meios = grafo->meios->seguinte;
+	grafo->meios->codigo = codnovo;
+	grafo->meios = aux;
+}
+
+void mudartipomeiovertice(Grafo* grafo, Meio* meio, char* tipo){
+	Meio* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, meio->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->meios;
+	while ((grafo->meios != NULL) && (grafo->meios->codigo != meio->codigo)) grafo->meios = grafo->meios->seguinte;
+	strcpy(grafo->meios->tipo, tipo);
+	grafo->meios = aux;
+}
+
+//função contem switchcase, pois os valores da bateria autonomia e custo são do mesmo tipo
+//Assim, para poupar tempo, realizei um switchcase para mudar perante o escolhido
+
+void mudarbatautcustvertice(Grafo* grafo, Meio* meio, int escolha, float valor) {
+	Meio* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, meio->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->meios;
+	while ((grafo->meios != NULL) && (grafo->meios->codigo != meio->codigo)) grafo->meios = grafo->meios->seguinte;
+	switch (escolha) {
+		case 3: 
+			grafo->meios->bateria = valor;
+			break;
+		case 4:
+			grafo->meios->autonomia = valor;
+			break;
+		case 5:
+			grafo->meios->custo = valor;
+			break;
+	}
+	grafo->meios = aux;
 }
