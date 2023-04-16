@@ -50,7 +50,8 @@ void listarutil(Utilizadores* inicio) {
 }
 
 void listargrafo(Grafo* inicio) {
-
+	Meio* auxmeio;
+	Adjacentes* auxadj;
 	printf("Os dados do grafo:\n\n");
 
 	while (inicio != NULL) {
@@ -61,11 +62,12 @@ void listargrafo(Grafo* inicio) {
 		}
 
 		else{
-
+			auxadj = inicio->adjacente;
 			while (inicio->adjacente != NULL) {
 				printf("\nadjacente: %s peso: %.2f", inicio->adjacente->geocodigo, inicio->adjacente->peso);
 				inicio->adjacente = inicio->adjacente->seguinte;
 			}
+			inicio->adjacente = auxadj;
 
 		}
 
@@ -73,10 +75,12 @@ void listargrafo(Grafo* inicio) {
 
 		}
 		else {
+			auxmeio = inicio->meios;
 			while(inicio->meios != NULL){
 				printf("\nCodigo meio no vertice: %d", inicio->meios->codigo);
 				inicio->meios = inicio->meios->seguinte;
 			}
+			inicio->meios = auxmeio;
 		}
 		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		inicio = inicio->seguinte;

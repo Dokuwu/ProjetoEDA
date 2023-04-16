@@ -101,7 +101,7 @@ int main() {
 				exec = 1;
 				while (exec) {//exec serve para a parte de funções dos utilizadores e administradores
 					printf("O que deseja fazer?\n1- Registar novo utilizador, administrador ou meio\n2- Remocao de um utilizador, administrador ou meio\n");
-					printf("3- Alteracao da informacao de um utilizador, administrador ou meio\n4- Listar dados\n5- Terminar sessao\n");
+					printf("3- Alteracao da informacao de um utilizador, administrador ou meio\n4- Listar dados\n5- adicionar geocodigo\n6- Terminar sessao\n");
 					scanf("%d", &choice);
 					system("cls");//Questiona o admin o que quer fazer
 
@@ -227,6 +227,7 @@ int main() {
 						else if (utiladminmeio == 3) {//meio
 							printf("Digite o codigo:");
 							scanf("%d", &cod);
+							removermeiovertice(grafo, meios, cod);
 							meios = removerMeio(meios, cod);
 							system("cls");
 							printf("Removido com sucesso! ");
@@ -261,17 +262,44 @@ int main() {
 						listaradmins(admins);
 						listargrafo(grafo);
 					}
+					//adicionar vertice
+					else if (choice == 5) {
+						printf("Digite o geocodigo que quer adicionar\n");
+						getchar();
+						scanf("%s", geocod);
+						if (!(verificargeocodigo(grafo, geocod))) {
+							grafo = criarvertice(grafo, geocod);
+							fixarmeiosvertices(meios, grafo);
 
+							while (addadj) {
+								printf("Deseja adicionar adjacente?\n");
+								scanf("%d", &addadj);
+								if (addadj) {
+									printf("Geocodigo: ");
+									getchar();
+									scanf("%s", geocodadj);
+									printf("Peso: ");
+									scanf("%f", &peso);
+									bool = adicionaradjacentes(grafo, geocod, geocodadj, peso);
+									system("cls");
+									if (bool) printf("Geocodigo ja e adjacente ou nao existe esse geocodigo!\n");
+								}
+							}
+						}
+						else {
+							printf("Ja existe esse geocodigo!\n");
+						}
+					}
 
 					//Logout
-					else if (choice == 5) {
+					else if (choice == 6) {
 						alreadylogged = 0;//serve para obrigar a fazer login, se escolher 
 						login = 3;//login a 3 para perguntar se quer fazer login como admin ou util
 						exec = 0;//exec a 0 para terminar o loop while
 					}
 
 					//No final de uma operação, pergunta se quer fazer mais alguma coisa, senão, envia para a escolha de login
-					if(choice < 5){
+					if(choice < 6){
 						printf("Deseja realizar outra operacao? (1/0)\n");
 						scanf("%d", &exec);
 						if (exec <= 0){//se digitar 0, acaba a sessão, e volta ao inicio da função

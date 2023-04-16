@@ -140,3 +140,40 @@ int adicionaradjacentes(Grafo* grafo, char* geocodigo, char* geocodigoadj, float
 	return 0;
 
 }
+
+void removermeiovertice(Grafo* grafo,Meio* meio, int cod) {
+	Meio* anterior, * atual, * aux;
+	while ((meio != NULL) && (meio->codigo != cod))//ir até o codigo ser igual
+	{
+		meio = meio->seguinte;
+	}
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, meio->geocodigo))) {//ir até o geocodigo corresponder
+		grafo = grafo->seguinte;
+	}
+	//nao necessita verificação se grafo é null pois temos sempre a certeza que existe um vertice com esse geocodigo
+	atual = grafo->meios;
+	anterior = grafo->meios;
+	if (atual->codigo == cod) // remoção do 1º registo
+	{
+		aux = atual->seguinte;
+		free(atual);
+		grafo->meios = aux;
+	}
+	else
+	{
+
+		while ((atual != NULL) && (atual->codigo != cod))//ir avançando na lista, até ser igual.
+		{
+			anterior = atual;
+			atual = atual->seguinte;
+		}
+		if (atual == NULL) return(grafo->meios);
+		else
+		{
+			anterior->seguinte = atual->seguinte;
+			free(atual);
+			grafo->meios = anterior;
+		}
+	}
+
+}

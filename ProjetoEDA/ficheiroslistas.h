@@ -102,3 +102,5 @@ void fixarutilsvertices(Utilizadores* inicioutils, Grafo* iniciografo);
 int verificargeocodigo(Grafo* grafo, char* geocodigo);
 Grafo* criarvertice(Grafo* inicio, char* geocodigo);
 int adicionaradjacentes(Grafo* grafo, char*geocodigo, char* geocodigoadj, float peso);
+void removermeiovertice(Grafo* grafo,Meio* meio, int cod);
+void alterarmeiovertice(Grafo*, int cod);

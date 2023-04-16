@@ -43,6 +43,7 @@ Meio* removerMeio(Meio* inicio, int cod){
 	Meio* anterior = inicio, * atual = inicio, * aux;
 
 	if (atual == NULL) return(NULL); // lista ligada vazia
+
 	else if (atual->codigo == cod) // remoção do 1º registo
 	{
 		aux = atual->seguinte;
@@ -51,6 +52,7 @@ Meio* removerMeio(Meio* inicio, int cod){
 	}
 	else
 	{
+		
 		while ((atual != NULL) && (atual->codigo != cod))//ir avançando na lista, até ser igual.
 		{
 			anterior = atual;
