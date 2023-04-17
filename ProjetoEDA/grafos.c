@@ -15,9 +15,9 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 	Grafo* vertices = NULL;
 
 	while ((fgets(linha, 200, bin) != NULL)) {
-		if (i == 0) {
+		if (i == 0) {// i serve para verificar se é a primeira linha, pois esta linha é a que tem o geocodigo dos vertices
 
-			int len = strlen(linha); // para remover o \n no final da linha
+			int len = strlen(linha); // para remover o \n no final da linha, pega o tamanho da string
 			if (linha[len - 1] == '\n') {
 				linha[len - 1] = '\0';
 				if(linha[len - 2] == '\r')
@@ -56,7 +56,7 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 				Adjacentes* novo = malloc(sizeof(struct registoadjacentes));
 				strcpy(novo->geocodigo, token);
 				token = strtok(NULL, ";");
-				novo->peso = atof(token); //atoi serve para converter string para inteiro
+				novo->peso = atof(token); //atof serve para converter string para float
 				novo->seguinte = vertices->adjacente;
 				vertices->adjacente = novo;
 				token = strtok(NULL, ";");
@@ -67,44 +67,6 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 	}
 
 	return inicio;
-
-}
-
-void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo) {
-	Grafo* vertices = iniciografo;
-	Meio* meioanterior;
-	while (vertices != NULL) { // para libertar as listas anteriormentes criadas, depois de alguma alteração do geocodigo de um meio
-		while (vertices->meios != NULL) {
-			meioanterior = vertices->meios;
-			vertices->meios = vertices->meios->seguinte;
-			free(meioanterior);
-		}
-		vertices = vertices->seguinte;
-	}
-	vertices = iniciografo;
-	while (iniciomeio != NULL) {
-		while (strcmp(vertices->geocodigo,iniciomeio->geocodigo)) {
-			vertices = vertices->seguinte;
-		}
-		if (vertices != NULL) {
-			Meio* novomeio = malloc(sizeof(struct registomeio));
-			novomeio->custo = iniciomeio->custo;
-			novomeio->codigo = iniciomeio->codigo;
-			novomeio->bateria = iniciomeio->bateria;
-			novomeio->autonomia = iniciomeio->autonomia;
-			novomeio->alugado = iniciomeio->alugado;
-			strcpy(novomeio->tipo, iniciomeio->tipo);
-			strcpy(novomeio->geocodigo, iniciomeio->geocodigo);
-			novomeio->seguinte = vertices->meios;
-			vertices->meios = novomeio;
-		}
-		vertices = iniciografo;
-		iniciomeio = iniciomeio->seguinte;
-	}
-	
-}
-
-void fixarutilsvertices(Utilizadores* inicioutils, Grafo* iniciografo) {
 
 }
 
@@ -130,12 +92,12 @@ Grafo* criarvertice(Grafo* inicio, char* geocodigo) {
 int adicionaradjacentes(Grafo* grafo, char* geocodigo, char* geocodigoadj, float peso) {
 	int bool;
 	bool = verificargeocodigo(grafo, geocodigoadj);
-	if (!(bool)) return 1;
+	if (!(bool)) return 1; // se o vertice nao existir, acaba a função
 
 	while ((grafo != NULL) && strcmp(grafo->geocodigo, geocodigo)) {
 		grafo = grafo->seguinte;
 	}
-	Adjacentes* verificador = grafo->adjacente;
+	Adjacentes* verificador = grafo->adjacente;// verificador para ver se já é adjacente
 	while (((verificador != NULL) && strcmp(verificador->geocodigo, geocodigoadj))){
 		verificador = verificador->seguinte;
 	}
@@ -149,6 +111,43 @@ int adicionaradjacentes(Grafo* grafo, char* geocodigo, char* geocodigoadj, float
 	return 0;
 
 }
+
+// Meios
+
+void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo) {
+	Grafo* vertices = iniciografo;
+	Meio* meioanterior;
+	while (vertices != NULL) { // para libertar as listas anteriormentes criadas, depois de alguma alteração do geocodigo de um meio
+		while (vertices->meios != NULL) {
+			meioanterior = vertices->meios;
+			vertices->meios = vertices->meios->seguinte;
+			free(meioanterior);
+		}
+		vertices = vertices->seguinte;
+	}
+	vertices = iniciografo;
+	while (iniciomeio != NULL) {
+		while (strcmp(vertices->geocodigo, iniciomeio->geocodigo)) {
+			vertices = vertices->seguinte;
+		}
+		if (vertices != NULL) {
+			Meio* novomeio = malloc(sizeof(struct registomeio));
+			novomeio->custo = iniciomeio->custo;
+			novomeio->codigo = iniciomeio->codigo;
+			novomeio->bateria = iniciomeio->bateria;
+			novomeio->autonomia = iniciomeio->autonomia;
+			novomeio->alugado = iniciomeio->alugado;
+			strcpy(novomeio->tipo, iniciomeio->tipo);
+			strcpy(novomeio->geocodigo, iniciomeio->geocodigo);
+			novomeio->seguinte = vertices->meios;
+			vertices->meios = novomeio;
+		}
+		vertices = iniciografo;
+		iniciomeio = iniciomeio->seguinte;
+	}
+
+}
+
 
 void removermeiovertice(Grafo* grafo,Meio* meio, int cod) {
 	Meio* anterior, * atual, * aux;
@@ -206,24 +205,138 @@ void mudartipomeiovertice(Grafo* grafo, Meio* meio, char* tipo){
 	grafo->meios = aux;
 }
 
-//função contem switchcase, pois os valores da bateria autonomia e custo são do mesmo tipo
-//Assim, para poupar tempo, realizei um switchcase para mudar perante o escolhido
-
-void mudarbatautcustvertice(Grafo* grafo, Meio* meio, int escolha, float valor) {
+void mudarbatvertice(Grafo* grafo, Meio* meio, float valor) {
 	Meio* aux;
 	while ((grafo != NULL) && (strcmp(grafo->geocodigo, meio->geocodigo))) grafo = grafo->seguinte;
 	aux = grafo->meios;
 	while ((grafo->meios != NULL) && (grafo->meios->codigo != meio->codigo)) grafo->meios = grafo->meios->seguinte;
-	switch (escolha) {
-		case 3: 
-			grafo->meios->bateria = valor;
-			break;
-		case 4:
-			grafo->meios->autonomia = valor;
-			break;
-		case 5:
-			grafo->meios->custo = valor;
-			break;
-	}
+	grafo->meios->bateria = valor;
 	grafo->meios = aux;
+}
+
+
+void mudarautvertice(Grafo* grafo, Meio* meio, float valor) {
+	Meio* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, meio->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->meios;
+	while ((grafo->meios != NULL) && (grafo->meios->codigo != meio->codigo)) grafo->meios = grafo->meios->seguinte;
+	grafo->meios->autonomia = valor;
+	grafo->meios = aux;
+}
+
+
+void mudarcustvertice(Grafo* grafo, Meio* meio, float valor) {
+	Meio* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, meio->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->meios;
+	while ((grafo->meios != NULL) && (grafo->meios->codigo != meio->codigo)) grafo->meios = grafo->meios->seguinte;
+	grafo->meios->custo = valor;
+	grafo->meios = aux;
+}
+
+//utilizadores
+
+
+void mudargeocodutil(Utilizadores* inicio,int NIF, char* geocod) {
+	while ((inicio != NULL) && (inicio->NIF != NIF)) inicio = inicio->seguinte;
+	strcpy(inicio->geocodigo, geocod);
+}
+
+
+void fixarutilsvertices(Utilizadores* inicioutils, Grafo* iniciografo) {
+	Grafo* vertices = iniciografo;
+	Utilizadores* utilanterior;
+	while (vertices != NULL) { // para libertar as listas anteriormentes criadas, depois de alguma alteração do geocodigo de um meio
+		while (vertices->utils != NULL) {
+			utilanterior = vertices->utils;
+			vertices->utils = vertices->utils->seguinte;
+			free(utilanterior);
+		}
+		vertices = vertices->seguinte;
+	}
+	vertices = iniciografo;
+	while (inicioutils != NULL) {
+		while (strcmp(vertices->geocodigo, inicioutils->geocodigo)) {
+			vertices = vertices->seguinte;
+		}
+		if (vertices != NULL) {
+			Utilizadores* novoutil = malloc(sizeof(struct registoutil));
+			novoutil->NIF = inicioutils->NIF;
+			novoutil->saldo = inicioutils->saldo;
+			strcpy(novoutil->nome, inicioutils->nome);
+			strcpy(novoutil->morada, inicioutils->morada);
+			strcpy(novoutil->geocodigo, inicioutils->geocodigo);
+			novoutil->seguinte = vertices->utils;
+			vertices->utils = novoutil;
+		}
+		vertices = iniciografo;
+		inicioutils = inicioutils->seguinte;
+	}
+}
+
+void removerutilvertice(Grafo* grafo, Utilizadores* util, int NIF) {
+	Utilizadores* anterior, * atual, * aux;
+	while ((util != NULL) && (util->NIF != NIF))//ir até o codigo ser igual
+	{
+		util = util->seguinte;
+	}
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, util->geocodigo))) {//ir até o geocodigo corresponder
+		grafo = grafo->seguinte;
+	}
+	//nao necessita verificação se grafo é null pois temos sempre a certeza que existe um vertice com esse geocodigo
+	atual = grafo->utils;
+	anterior = grafo->utils;
+	aux = grafo->utils;
+	if (atual->NIF == NIF) // remoção do 1º registo
+	{
+		aux = atual->seguinte;
+		free(atual);
+		grafo->utils = aux;
+	}
+	else
+	{
+
+		while ((atual != NULL) && (atual->NIF != NIF))//ir avançando na lista, até ser igual.
+		{
+			anterior = atual;
+			atual = atual->seguinte;
+		}
+		if (atual == NULL) return(grafo->utils);
+		else
+		{
+			anterior->seguinte = atual->seguinte;
+			free(atual);
+			grafo->utils = aux;
+		}
+	}
+
+}
+
+
+void mudarnomeutilvertice(Grafo * grafo, Utilizadores * util, char* nome){
+	Utilizadores* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, util->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->utils;
+	while ((grafo->utils != NULL) && (grafo->utils->NIF != util->NIF)) grafo->utils = grafo->utils->seguinte;
+	strcpy(grafo->utils->nome, nome);
+	grafo->utils = aux;
+
+}
+
+void mudarmoradavertice(Grafo* grafo, Utilizadores* util, char* morada) {
+	Utilizadores* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, util->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->utils;
+	while ((grafo->utils != NULL) && (grafo->utils->NIF != util->NIF)) grafo->utils = grafo->utils->seguinte;
+	strcpy(grafo->utils->morada, morada);
+	grafo->utils = aux;
+}
+
+void mudarNIFvertice(Grafo* grafo, Utilizadores* util, int NIF) {
+	Utilizadores* aux;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, util->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->utils;
+	while ((grafo->utils != NULL) && (grafo->utils->NIF != util->NIF)) grafo->utils = grafo->utils->seguinte;
+	grafo->utils->NIF = NIF;
+	grafo->utils = aux;
 }
