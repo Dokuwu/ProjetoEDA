@@ -8,12 +8,13 @@ SIM leitura de bin com informação do grafo
 guardar informação do grafo
 SIM criação de grafo
 SIM adição de adjacentes
+adição de caminhos
 SIM adição da conexão dos meios
 SIM remoção da conexão dos meios
-alteracão dos dados na conexão dos meios
-adição da conexão dos utils
-remoção da conexão dos utils
-alteracão dos dados na conexão dos utils
+SIM alteracão dos dados na conexão dos meios
+SIM adição da conexão dos utils
+SIM remoção da conexão dos utils
+SIM alteracão dos dados na conexão dos utils
 
 */
 
@@ -215,6 +216,7 @@ int main() {
 						if (utiladminmeio == 1) {//utilizador
 							printf("Digite o NIF de utilizador:");
 							scanf("%d", &utilNIF);
+							removerutilvertice(grafo, utils, utilNIF);
 							utils = removerUtil(utils, utilNIF);
 							system("cls");
 							printf("Removido com sucesso! ");
@@ -243,7 +245,7 @@ int main() {
 						if (utiladminmeio == 1) {//utilizador
 							printf("Digite o NIF de quem quer mudar as informacoes: ");
 							scanf("%d", &utilNIF);
-							mudarUtils(utils, utilNIF);
+							mudarUtils(utils, utilNIF,grafo);
 						}
 						else if (utiladminmeio == 2) {//administrador
 							printf("Digite o codigo do administrador de quem quer mudar as informacoes: ");
@@ -337,7 +339,7 @@ int main() {
 			else {
 				exec = 1;
 				while (exec) {//mesma ideia dos admins
-					printf("O que deseja fazer?\n1- Ver e adicionar saldo\n2- Ver todos os meios\n3- Ver os meios num geocodigo\n4- Alugar meio\n5- Terminar sessao\n");
+					printf("O que deseja fazer?\n1- Ver e adicionar saldo\n2- Ver todos os meios\n3- Ver os meios num geocodigo\n4- Ver os meios no seu geocodigo\n5- Mudar seu geocodigo \n6- Alugar meio\n7- Terminar sessao\n");
 					scanf("%d", &choice);
 					system("cls");
 
@@ -366,19 +368,36 @@ int main() {
 						listarmeiosgeocod(meios, geocod);
 					}
 
-					else if (choice == 4) {//parte para alugar meio
+					else if (choice == 4) {//lista os meios no geocodigo do cliente
+						listarutilmeiogeocod(grafo, utils, utilNIF);
+					}
+
+					else if (choice == 5) {//Mudar geocodigo do utilizador
+						printf("Digite seu geocodigo:\n");
+						getchar();
+						scanf("%s", geocod);
+						if(verificargeocodigo(grafo, geocod)){
+							mudargeocodutil(utils,utilNIF, geocod);
+							fixarutilsvertices(utils, grafo);
+						}
+						else {
+							printf("Esse geocodigo nao existe");
+						}
+					}
+
+					else if (choice == 6) {//parte para alugar meio
 						printf("Escreva o codigo do meio:");
 						scanf("%d", &cod);
 						aluguelmeio(utils,utilNIF,meios,cod);
 					}
 					//Logout
-					else if (choice == 5) {
+					else if (choice == 7) {
 						alreadylogged = 0;
 						login = 3;
 						exec = 0;
 					}
 
-					if (choice < 5) {
+					if (choice < 7) {
 						printf("Deseja realizar outra operacao? (1/0)\n");
 						scanf("%d", &exec);
 						if (exec <= 0) {

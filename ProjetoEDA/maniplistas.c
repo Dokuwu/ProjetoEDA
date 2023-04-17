@@ -129,7 +129,7 @@ void mudarMeios(Meio* meio, int cod, Grafo* grafo) {
 					printf("\nBateria\n");
 					scanf("%f", &bat);
 					if (bat >= 0) {
-						mudarbatautcustvertice(grafo, meio, choice, bat);
+						mudarbatvertice(grafo, meio, bat);
 						meio->bateria = bat;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -142,7 +142,7 @@ void mudarMeios(Meio* meio, int cod, Grafo* grafo) {
 					printf("\nAutonomia\n");
 					scanf("%f", &aut);
 					if (aut >= 0) {
-						mudarbatautcustvertice(grafo, meio, choice, aut);
+						mudarautvertice(grafo, meio, aut);
 						meio->autonomia = aut;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -155,7 +155,7 @@ void mudarMeios(Meio* meio, int cod, Grafo* grafo) {
 					printf("\nCusto\n");
 					scanf("%f", &cust);
 					if (cust > 0) {
-						mudarbatautcustvertice(grafo, meio, choice, cust, inicio);
+						mudarcustvertice(grafo, meio, cust);
 						meio->custo = cust;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -287,7 +287,7 @@ Utilizadores* removerUtil(Utilizadores* inicio, int NIF) {
 	}
 }
 
-void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarMeios
+void mudarUtils(Utilizadores* util, int NIF, Grafo* grafo) {//mesmo pensamento da funão mudarMeios
 	int i = 0;
 	char nome[100], morada[150];
 	int escolha = 1,choice;
@@ -317,6 +317,7 @@ void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarM
 					getchar();
 					gets(nome);
 					strcpy(util->nome, nome);
+					mudarnomeutilvertice( grafo, util, nome);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}
@@ -326,6 +327,7 @@ void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarM
 					scanf("%d", &NIF);
 					system("cls");
 					if (!(existeUtil(inicio, NIF))){//verifica se o NIF já existe
+						mudarNIFvertice(grafo,util,NIF);
 						util->NIF = NIF;
 					printf("Mudanca bem sucedida!\n");
 					}
@@ -337,6 +339,7 @@ void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarM
 					getchar();
 					gets(morada);
 					strcpy(util->morada, morada);
+					mudarmoradavertice(grafo,util,morada);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}

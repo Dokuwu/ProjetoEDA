@@ -51,6 +51,7 @@ void listarutil(Utilizadores* inicio) {
 
 void listargrafo(Grafo* inicio) {
 	Meio* auxmeio;
+	Utilizadores* auxutils;
 	Adjacentes* auxadj;
 	printf("Os dados do grafo:\n\n");
 
@@ -82,7 +83,28 @@ void listargrafo(Grafo* inicio) {
 			}
 			inicio->meios = auxmeio;
 		}
+
+		if (inicio->utils == NULL) {
+			;
+		}
+		else {
+			auxutils = inicio->utils;
+			while (inicio->utils != NULL) {
+				printf("\nNome utilizador no vertice: %s	NIF utilizador no vertice: %d", inicio->utils->nome, inicio->utils->NIF);
+				inicio->utils = inicio->utils->seguinte;
+			}
+			inicio->utils = auxutils;
+		}
 		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		inicio = inicio->seguinte;
 	}
+}
+
+void listarutilmeiogeocod(Grafo* grafo, Utilizadores* utilizador, int NIF) {
+	Meio* aux;
+	while ((utilizador != NULL) && (utilizador->NIF != NIF)) utilizador = utilizador->seguinte;
+	while ((grafo != NULL) && (strcmp(grafo->geocodigo, utilizador->geocodigo))) grafo = grafo->seguinte;
+	aux = grafo->meios;
+	listarmeios(grafo->meios);
+	grafo->meios = aux;
 }
