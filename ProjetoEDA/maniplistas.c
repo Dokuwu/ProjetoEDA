@@ -43,6 +43,7 @@ Meio* removerMeio(Meio* inicio, int cod){
 	Meio* anterior = inicio, * atual = inicio, * aux;
 
 	if (atual == NULL) return(NULL); // lista ligada vazia
+
 	else if (atual->codigo == cod) // remoção do 1º registo
 	{
 		aux = atual->seguinte;
@@ -51,6 +52,7 @@ Meio* removerMeio(Meio* inicio, int cod){
 	}
 	else
 	{
+		
 		while ((atual != NULL) && (atual->codigo != cod))//ir avançando na lista, até ser igual.
 		{
 			anterior = atual;
@@ -66,12 +68,12 @@ Meio* removerMeio(Meio* inicio, int cod){
 	}
 }
 
-void mudarMeios(Meio* meio, int cod) {
+void mudarMeios(Meio* meio, int cod, Grafo* grafo) {
 	int i = 0, bool;
 	float bat, aut, cust;
 	char tipo[20], geocod[100];
 	int escolha = 1, choice;
-	Utilizadores* inicio;
+	Meio* inicio;
 	inicio = meio;
 	for (; (i == 1 || i == 2) != 1;) {//loop for para chegar ao meio que queremos, para quando i for 1 ou 2
 		if (meio == NULL)//se chegou ao fim da lista, i é 2, mostra uma mensagem de erro e acaba a função
@@ -84,7 +86,7 @@ void mudarMeios(Meio* meio, int cod) {
 		}
 	}
 	if (i == 2) {
-		printf("\nNao foi possivel encontrar correspondencia a esse NIF.\n");
+		printf("\nNao foi possivel encontrar correspondencia a esse codigo.\n");
 		return;
 	}
 	else {
@@ -97,6 +99,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("Codigo\n");
 					scanf("%d", &cod);
 					if (!(existeMeio(inicio, cod))) {
+						mudarcodmeiovertice(grafo,meio,cod);
 						meio->codigo = cod;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -116,6 +119,7 @@ void mudarMeios(Meio* meio, int cod) {
 						else
 							printf("Digitou errado, escreva de novo:\n");
 					}
+					mudartipomeiovertice(grafo,meio,tipo);
 					strcpy(meio->tipo, tipo);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
@@ -125,6 +129,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("\nBateria\n");
 					scanf("%f", &bat);
 					if (bat >= 0) {
+						mudarbatvertice(grafo, meio, bat);
 						meio->bateria = bat;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -137,6 +142,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("\nAutonomia\n");
 					scanf("%f", &aut);
 					if (aut >= 0) {
+						mudarautvertice(grafo, meio, aut);
 						meio->autonomia = aut;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -149,6 +155,7 @@ void mudarMeios(Meio* meio, int cod) {
 					printf("\nCusto\n");
 					scanf("%f", &cust);
 					if (cust > 0) {
+						mudarcustvertice(grafo, meio, cust);
 						meio->custo = cust;
 						system("cls");
 						printf("Mudanca bem sucedida!\n");
@@ -162,6 +169,7 @@ void mudarMeios(Meio* meio, int cod) {
 					scanf("%s", geocod);
 					system("cls");
 					strcpy(meio->geocodigo, geocod);
+					fixarmeiosvertices(inicio, grafo);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}
@@ -193,6 +201,7 @@ void BubbleSortMeios(Meio* inicio) {
 				float auxbateria = atual->bateria;
 				float auxautonomia = atual->autonomia;
 				float auxcusto = atual->custo;
+				int auxalugado = atual->alugado;
 				char auxtipo[50],auxgeocod[50];
 				strcpy(auxtipo, atual->tipo);
 				strcpy(auxgeocod, atual->geocodigo);
@@ -201,6 +210,7 @@ void BubbleSortMeios(Meio* inicio) {
 				atual->codigo = seguinte->codigo;
 				atual->bateria = seguinte->bateria;
 				atual->autonomia = seguinte->autonomia;
+				atual->alugado = seguinte->alugado;
 				strcpy(atual->tipo, seguinte->tipo);
 				strcpy(atual->geocodigo, seguinte->geocodigo);
 
@@ -208,6 +218,7 @@ void BubbleSortMeios(Meio* inicio) {
 				seguinte->codigo = auxcodigo;
 				seguinte->bateria = auxbateria;
 				seguinte->autonomia = auxautonomia;
+				seguinte->alugado = auxalugado;
 				strcpy(seguinte->tipo, auxtipo);
 				strcpy(seguinte->geocodigo, auxgeocod);
 
@@ -276,7 +287,7 @@ Utilizadores* removerUtil(Utilizadores* inicio, int NIF) {
 	}
 }
 
-void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarMeios
+void mudarUtils(Utilizadores* util, int NIF, Grafo* grafo) {//mesmo pensamento da funão mudarMeios
 	int i = 0;
 	char nome[100], morada[150];
 	int escolha = 1,choice;
@@ -306,6 +317,7 @@ void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarM
 					getchar();
 					gets(nome);
 					strcpy(util->nome, nome);
+					mudarnomeutilvertice( grafo, util, nome);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}
@@ -315,6 +327,7 @@ void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarM
 					scanf("%d", &NIF);
 					system("cls");
 					if (!(existeUtil(inicio, NIF))){//verifica se o NIF já existe
+						mudarNIFvertice(grafo,util,NIF);
 						util->NIF = NIF;
 					printf("Mudanca bem sucedida!\n");
 					}
@@ -326,6 +339,7 @@ void mudarUtils(Utilizadores* util, int NIF) {//mesmo pensamento da funão mudarM
 					getchar();
 					gets(morada);
 					strcpy(util->morada, morada);
+					mudarmoradavertice(grafo,util,morada);
 					system("cls");
 					printf("Mudanca bem sucedida!\n");
 				}
