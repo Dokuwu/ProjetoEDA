@@ -451,6 +451,8 @@ int main() {
 	utilsb = fopen("util.bin", "wb");
 	escreverbinutil(utils, utilsb);
 	fclose(utilsb);
-
+	grafob = fopen("grafo.bin", "wb");
+	escrevergrafo(grafo, grafob);
+	fclose(grafob);
 	return 0;
 }

@@ -105,6 +105,7 @@ void listarutilmeiogeocod(Grafo* inicio, Utilizadores* utilzadores, int NIF);
 
 //parte da criação do grafo
 Grafo* pegarregistografo(Grafo* inicio, FILE* bin);
+void escrevergrafo(Grafo* inicio, FILE* bin);
 void fixarmeiosvertices(Meio* iniciomeio, Grafo* iniciografo);
 void fixarutilsvertices(Utilizadores* inicioutils, Grafo* iniciografo);
 int verificargeocodigo(Grafo* grafo, char* geocodigo);

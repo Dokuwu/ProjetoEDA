@@ -44,6 +44,8 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 			int len = strlen(linha); // para remover o \n no final da linha
 			if (linha[len - 1] == '\n') {
 				linha[len - 1] = '\0';
+				if (linha[len - 2] == '\r')
+					linha[len - 2] = '\0';
 			}
 
 			token = strtok(linha, ";");
@@ -68,6 +70,41 @@ Grafo* pegarregistografo(Grafo* inicio, FILE* bin) {
 
 	return inicio;
 
+}
+
+void escrevergrafo(Grafo* inicio, FILE* bin) {
+	int i = 0; // escrever na primeira linha o nome dos vertices
+	Grafo* aux = inicio;
+	if (bin != NULL) {
+		while (inicio != NULL) {
+			if (inicio->seguinte != NULL) {
+				fprintf(bin, "%s;", inicio->geocodigo);
+			}
+			else {
+				fprintf(bin, "%s\n", inicio->geocodigo);
+			}
+			inicio = inicio->seguinte;
+		}
+		inicio = aux;
+		while (inicio != NULL) {
+			if (inicio->adjacente != NULL) {
+				fprintf(bin,"%s;", inicio->geocodigo);
+				while (inicio->adjacente != NULL) {
+					if (inicio->adjacente->seguinte != NULL) {
+						fprintf(bin, "%s;%.2f;", inicio->adjacente->geocodigo, inicio->adjacente->peso);
+					}
+					else {
+						fprintf(bin, "%s;%.2f\n", inicio->adjacente->geocodigo, inicio->adjacente->peso);
+					}
+					inicio->adjacente = inicio->adjacente->seguinte;
+				}
+			}
+			inicio = inicio->seguinte;
+
+		}
+	}
+	else
+		printf("Erro na execucao do ficheiro");
 }
 
 int verificargeocodigo(Grafo* grafo, char* geocodigo) {
@@ -340,3 +377,4 @@ void mudarNIFvertice(Grafo* grafo, Utilizadores* util, int NIF) {
 	grafo->utils->NIF = NIF;
 	grafo->utils = aux;
 }
+
