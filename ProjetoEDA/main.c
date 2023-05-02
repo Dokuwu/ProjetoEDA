@@ -365,7 +365,7 @@ int main() {
 			else {
 				exec = 1;
 				while (exec) {//mesma ideia dos admins
-					printf("O que deseja fazer?\n1- Ver e adicionar saldo\n2- Ver todos os meios\n3- Ver os meios num geocodigo\n4- Ver os meios no seu geocodigo\n5- Mudar seu geocodigo \n6- Alugar meio\n7- Terminar sessao\n");
+					printf("O que deseja fazer?\n1- Ver e adicionar saldo\n2- Ver todos os meios\n3- Ver os meios num geocodigo\n4- Ver os meios no seu geocodigo \n5- Mostrar meios num raio\n6- Mudar seu geocodigo\n7- Alugar meio\n8- Terminar sessao\n");
 					scanf("%d", &choice);
 					system("cls");
 
@@ -398,12 +398,28 @@ int main() {
 						listarutilmeiogeocod(grafo, utils, utilNIF);
 					}
 
-					else if (choice == 5) {//Mudar geocodigo do utilizador
+					else if (choice == 5) {//Mostrar geocodigos num raio e meios de um determinado geocodigo nesse tipo
+						printf("Digite a distancia:\n");
+						scanf("%f", &peso);
+						printf("Digite o tipo:\n");
+						bool = 1;
+						while (bool) {
+							scanf("%s", tipo);//impede erros de escrita, ajudando assim se necessitar que pesquisar pelo nome, não haver problemas
+							if ((!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta"))))
+								bool = 0;
+							else
+								printf("Digitou errado, escreva de novo:\n");
+						}
+						printf("Os meios disponiveis sao:\n");
+						listarMeiosPeso(grafo, utilNIF,utils,tipo, peso);
+					}
+
+					else if (choice == 6) {//Mudar geocodigo do utilizador
 						printf("Digite seu geocodigo:\n");
 						getchar();
 						scanf("%s", geocod);
-						if(verificargeocodigo(grafo, geocod)){
-							mudargeocodutil(utils,utilNIF, geocod);
+						if (verificargeocodigo(grafo, geocod)) {
+							mudargeocodutil(utils, utilNIF, geocod);
 							fixarutilsvertices(utils, grafo);
 						}
 						else {
@@ -411,19 +427,19 @@ int main() {
 						}
 					}
 
-					else if (choice == 6) {//parte para alugar meio
+					else if (choice == 7) {//parte para alugar meio
 						printf("Escreva o codigo do meio:");
 						scanf("%d", &cod);
-						aluguelmeio(utils,utilNIF,meios,cod);
+						aluguelmeio(utils, utilNIF, meios, cod);
 					}
 					//Logout
-					else if (choice == 7) {
+					else if (choice == 8) {
 						alreadylogged = 0;
 						login = 3;
 						exec = 0;
 					}
 
-					if (choice < 7) {
+					if (choice < 8) {
 						printf("Deseja realizar outra operacao? (1/0)\n");
 						scanf("%d", &exec);
 						if (exec <= 0) {

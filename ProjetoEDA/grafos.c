@@ -378,3 +378,104 @@ void mudarNIFvertice(Grafo* grafo, Utilizadores* util, int NIF) {
 	grafo->utils = aux;
 }
 
+/// comandos gerais de caminhos ///
+
+Grafo* pegarorigem(Grafo* grafo, char* origem) { // pega a origem na lista dos grafos
+	while (strcmp(grafo->geocodigo, origem)) {
+		grafo = grafo->seguinte;
+	}
+	return grafo;
+}
+
+int visitado(Pilha* sequencia, char* geocodigo) { // verifica numa lista se um determinado geocodigo já foi visitado, se sim, retorna 1, se não, retorna 0
+	int i;
+	while (sequencia != NULL) {
+		if (!strcmp(sequencia->geocodigo, geocodigo)) {
+			return(1);
+		}
+		sequencia = sequencia->seguinte;
+	}
+	return(0);
+}
+
+Pilha* colocarsequencia(Pilha* sequencia, char* geocodigo) { // guarda no final de uma lista (caminho) um geocodigo
+	Pilha* sequenciaincio = sequencia;
+	if (sequencia == NULL) {
+		Pilha* sequencianovo = malloc(sizeof(struct pilhageocodigo));
+		sequencianovo->seguinte = NULL;
+		strcpy(sequencianovo->geocodigo, geocodigo);
+		sequencia = sequencianovo;
+		return sequencia;
+	}
+	else {
+		while (sequencia->seguinte != NULL) {
+			sequencia = sequencia->seguinte;
+		}
+		Pilha* sequencianovo = malloc(sizeof(struct pilhageocodigo));
+		strcpy(sequencianovo->geocodigo, geocodigo);
+		sequencianovo->seguinte = NULL;
+		sequencia->seguinte = sequencianovo;
+	}
+
+	return sequenciaincio;
+}
+
+Pilha* copiarpilha(Pilha* sequencianova, Pilha* sequencia) { // copia uma lista para outra
+	Pilha* aux = NULL;
+	if (sequencia != NULL) {
+		while (sequencia != NULL) {
+			Pilha* sequencianovo = malloc(sizeof(struct pilhageocodigo));
+			strcpy(sequencianovo->geocodigo, sequencia->geocodigo);
+			sequencianovo->seguinte = NULL;
+			if (sequencianova == NULL) {
+				sequencianova = sequencianovo;
+				aux = sequencianova;
+				sequencia = sequencia->seguinte;
+			}
+			else {
+				while (sequencianova->seguinte != NULL) {
+					sequencianova = sequencianova->seguinte;
+				}
+				sequencianova->seguinte = sequencianovo;
+				sequencianova = aux;
+				sequencia = sequencia->seguinte;
+			}
+		}
+	}
+	return sequencianova;
+}
+
+/// listagem dos meios por raio ///
+
+
+//função para calcular todos os caminhos possiveis de um vertice e listar os meios que estao pelo caminho
+void listarMeiosPeso(Grafo* grafo, int NIF, Utilizadores* inicio, char* tipo, float PesoLimite) {
+	Pilha* sequencia = NULL;
+	while (inicio->NIF != NIF) inicio = inicio->seguinte;
+	listarMeiosAuxpeso(grafo, inicio->geocodigo, tipo, sequencia, 0, PesoLimite);
+
+}
+
+
+void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia, float pesoTotal, float PesoLimite) {
+	Grafo* inicio = grafo;
+	Adjacentes* auxadj;
+	grafo = pegarorigem(grafo, origem); // pega o vertice de onde está 
+	if (PesoLimite < pesoTotal) {
+		return; // retorna para o vertice anterior se o peso do caminho for maior que o limite
+	}
+	else {
+		if (!visitado(sequencia, origem)) { // verifica se já passamos por esse vertice
+			sequencia = colocarsequencia(sequencia, grafo->geocodigo); // se nao passamos coloca na sequencia (caminho)
+			printf("Geocodigo local:%s\n", grafo->geocodigo);//mostra a origem
+			listarmeiostipo(grafo->meios, tipo);//lista os vertices nessa origem
+		}
+
+		auxadj = grafo->adjacente; // loop para avançar para os vertices adjacentes
+		while (auxadj != NULL) {
+			grafo = inicio;
+			listarMeiosAuxpeso(grafo, auxadj->geocodigo, tipo, sequencia, pesoTotal + auxadj->peso, PesoLimite);
+			auxadj = auxadj->seguinte;
+		}
+	}
+}

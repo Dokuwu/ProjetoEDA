@@ -100,6 +100,10 @@ void listargrafo(Grafo* inicio) {
 	}
 }
 
+
+///          FASE 2          ////
+
+// Lista os meios pertencentes ao geocodigo de um utilizador
 void listarutilmeiogeocod(Grafo* grafo, Utilizadores* utilizador, int NIF) {
 	Meio* aux;
 	while ((utilizador != NULL) && (utilizador->NIF != NIF)) utilizador = utilizador->seguinte;
@@ -107,4 +111,22 @@ void listarutilmeiogeocod(Grafo* grafo, Utilizadores* utilizador, int NIF) {
 	aux = grafo->meios;
 	listarmeios(grafo->meios);
 	grafo->meios = aux;
+}
+
+
+//lista os meios de um determinado tipo
+void listarmeiostipo(Meio* inicio, char* tipo) {//funcao para mostrar os meios
+	while (inicio != NULL) {
+		if (!(strcmp(inicio->tipo, tipo))) {
+			printf("Codigo:%d Tipo:%s Bateria:%.2f", inicio->codigo, inicio->tipo, inicio->bateria);
+			if (inicio->alugado == 1)//se estiver alugado mostra que sim senão mostra que nao
+				printf(" Alugado: Sim");
+			else
+				printf(" Alugado: Nao");
+			printf("\nAutonomia: %.2f Custo : %.2f$ geocodigo : %s\n", inicio->autonomia, inicio->custo, inicio->geocodigo);
+			printf("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-\n");
+		}
+		inicio = inicio->seguinte;
+	}
+	printf("\n\n\n");
 }
