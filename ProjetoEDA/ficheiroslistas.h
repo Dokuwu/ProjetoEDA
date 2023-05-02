@@ -44,8 +44,21 @@ typedef struct registovertices {
 	Adjacentes* adjacente;
 	Meio* meios;
 	Utilizadores* utils;
-	struct Lista* seguinte;
+	struct registovertices* seguinte;
 } Grafo;
+
+
+typedef struct pilhageocodigo {
+	char geocodigo[100];
+	struct pilhageocodigo* seguinte;
+} Pilha;
+
+
+typedef struct guardarpilhas {
+	Pilha* pilha;
+	float peso;
+	struct guardarpilhas* seguinte;
+} Listapilhas;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -102,6 +115,7 @@ void listarutil(Utilizadores* inicio);
 // Listar coisas FASE 2
 void listargrafo(Grafo* inicio);
 void listarutilmeiogeocod(Grafo* inicio, Utilizadores* utilzadores, int NIF);
+void listarmeiostipo(Meio* inicio, char* tipo);
 
 //parte da criação do grafo
 Grafo* pegarregistografo(Grafo* inicio, FILE* bin);
@@ -126,3 +140,19 @@ void removerutilvertice(Grafo* grafo, Utilizadores* util, int NIF);
 void mudarnomeutilvertice(Grafo* grafo, Utilizadores* util,char* nome);
 void mudarmoradavertice(Grafo* grafo, Utilizadores* util, char* morada);
 void mudarNIFvertice(Grafo* grafo, Utilizadores* util, int NIF);
+
+
+//~~~~~~~Caminhos nos grafo~~~~~~~//
+
+// funções gerais
+int visitado(Pilha* sequencia, char* geocodigo);
+Pilha* colocarsequencia(Pilha* sequencia, char* geocodigo);
+Grafo* pegarorigem(Grafo* grafo, char* origem);
+Pilha* copiarpilha(Pilha* sequencianova, Pilha* sequencia);
+
+
+
+
+/// listar meios por raio
+void listarMeiosPeso(Grafo* grafo,int NIF, Utilizadores* inicio, char* tipo, float PesoLimite);
+void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia, float pesoTotal, float PesoLimite);
