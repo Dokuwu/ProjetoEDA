@@ -161,10 +161,9 @@ void listarcaminho(Listapilhas* pilhas);
 
 //caixeiroviajante
 void listarCaminhobateria(Grafo* grafo, char* origem, char* tipo);
-
-Listapilhas* listarCaminhoRapidoAux(Grafo* grafo, char* origem, char* destino, Pilha* sequencia, float pesoTotal, Listapilhas* listacaminhos);
-Listapilhas* verificarmenor(Listapilhas* caminhos);
-
-Pilha* pegarverticesbateria(Grafo* grafo, char* tipo);
 int nbatvertices(Grafo* grafo, char* destino, char* tipo);
+Pilha* pegarverticesbateria(Grafo* grafo, char* tipo);
+Listapilhas* listarcaminhorapidoaux(Grafo* grafo, char* origem, char* destino, Pilha* sequencia, float pesoTotal, Listapilhas* listacaminhos);
+Listapilhas* verificarmenor(Listapilhas* caminhos);
+Listapilhas* guardarcaminho(Pilha* caminho, Listapilhas* listacaminho, float peso);
 Listapilhas* limparpilha(Listapilhas* listapilhas);
