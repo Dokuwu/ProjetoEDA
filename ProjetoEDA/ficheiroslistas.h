@@ -156,3 +156,15 @@ Pilha* copiarpilha(Pilha* sequencianova, Pilha* sequencia);
 /// listar meios por raio
 void listarMeiosPeso(Grafo* grafo,int NIF, Utilizadores* inicio, char* tipo, float PesoLimite);
 void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia, float pesoTotal, float PesoLimite);
+/// listar caminho em Listapilhas
+void listarcaminho(Listapilhas* pilhas);
+
+//caixeiroviajante
+void listarCaminhobateria(Grafo* grafo, char* origem, char* tipo);
+
+Listapilhas* listarCaminhoRapidoAux(Grafo* grafo, char* origem, char* destino, Pilha* sequencia, float pesoTotal, Listapilhas* listacaminhos);
+Listapilhas* verificarmenor(Listapilhas* caminhos);
+
+Pilha* pegarverticesbateria(Grafo* grafo, char* tipo);
+int nbatvertices(Grafo* grafo, char* destino, char* tipo);
+Listapilhas* limparpilha(Listapilhas* listapilhas);

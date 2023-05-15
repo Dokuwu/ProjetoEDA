@@ -456,7 +456,6 @@ void listarMeiosPeso(Grafo* grafo, int NIF, Utilizadores* inicio, char* tipo, fl
 
 }
 
-
 void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia, float pesoTotal, float PesoLimite) {
 	Grafo* inicio = grafo;
 	Adjacentes* auxadj;
@@ -479,3 +478,8 @@ void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia
 		}
 	}
 }
+
+/*
+~criar estrutura que recebe geocodigo e numero de meios
+
+*/
