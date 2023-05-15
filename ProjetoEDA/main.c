@@ -104,7 +104,7 @@ int main() {
 				exec = 1;
 				while (exec) {//exec serve para a parte de funções dos utilizadores e administradores
 					printf("O que deseja fazer?\n1- Registar novo utilizador, administrador ou meio\n2- Remocao de um utilizador, administrador ou meio\n");
-					printf("3- Alteracao da informacao de um utilizador, administrador ou meio\n4- Listar dados\n5- Adicionar geocodigo\n6- Adicionar caminho\n7- Terminar sessao\n");
+					printf("3- Alteracao da informacao de um utilizador, administrador ou meio\n4- Listar dados\n5- Adicionar geocodigo\n6- Adicionar caminho\n7- Mostrar caminho para pegar todos os meios de um tipo\n8- Terminar sessao\n");
 					scanf("%d", &choice);
 					system("cls");//Questiona o admin o que quer fazer
 
@@ -322,15 +322,29 @@ int main() {
 						}
 					}
 
-					//Logout
 					else if (choice == 7) {
+						printf("Digite o geocodigo do vertice:\n");
+						fscanf(stdin,"%s", geocod);
+						printf("\nTipo: (trotinete/bicicleta)\n");
+						bool = 1;
+						while (bool) {
+							scanf("%s", tipo);//impede erros de escrita, ajudando assim se necessitar que pesquisar pelo nome, não haver problemas
+							if ((!(strcmp(tipo, "trotinete")) || !(strcmp(tipo, "bicicleta"))))
+								bool = 0;
+							else
+								printf("Digitou errado, escreva de novo:\n");
+						}
+						listarCaminhobateria(grafo, geocod, tipo);
+					}
+					//Logout
+					else if (choice == 8) {
 						alreadylogged = 0;//serve para obrigar a fazer login, se escolher 
 						login = 3;//login a 3 para perguntar se quer fazer login como admin ou util
 						exec = 0;//exec a 0 para terminar o loop while
 					}
 
 					//No final de uma operação, pergunta se quer fazer mais alguma coisa, senão, envia para a escolha de login
-					if(choice < 7){
+					if(choice < 8){
 						printf("Deseja realizar outra operacao? (1/0)\n");
 						scanf("%d", &exec);
 						if (exec <= 0){//se digitar 0, acaba a sessão, e volta ao inicio da função

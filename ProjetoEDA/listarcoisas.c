@@ -101,7 +101,7 @@ void listargrafo(Grafo* inicio) {
 }
 
 
-///          FASE 2          ////
+//////////////////     FASE 2     //////////////////
 
 // Lista os meios pertencentes ao geocodigo de um utilizador
 void listarutilmeiogeocod(Grafo* grafo, Utilizadores* utilizador, int NIF) {
@@ -114,7 +114,7 @@ void listarutilmeiogeocod(Grafo* grafo, Utilizadores* utilizador, int NIF) {
 }
 
 
-//lista os meios de um determinado tipo
+// lista os meios de um determinado tipo
 void listarmeiostipo(Meio* inicio, char* tipo) {//funcao para mostrar os meios
 	while (inicio != NULL) {
 		if (!(strcmp(inicio->tipo, tipo))) {
@@ -129,4 +129,13 @@ void listarmeiostipo(Meio* inicio, char* tipo) {//funcao para mostrar os meios
 		inicio = inicio->seguinte;
 	}
 	printf("\n\n\n");
+}
+
+// lista o caminho no inicio de uma lista do tipo de estrutura Listapilhas
+void listarcaminho(Listapilhas* pilhas) {
+	while (pilhas->pilha->seguinte != NULL) {
+		printf("%s->", pilhas->pilha->geocodigo);
+		pilhas->pilha = pilhas->pilha->seguinte;
+	}
+	printf("%s\n", pilhas->pilha->geocodigo);
 }
