@@ -449,14 +449,14 @@ Pilha* copiarpilha(Pilha* sequencianova, Pilha* sequencia) { // copia uma lista 
 
 
 //função para calcular todos os caminhos possiveis de um vertice e listar os meios que estao pelo caminho
-void listarMeiosPeso(Grafo* grafo, int NIF, Utilizadores* inicio, char* tipo, float PesoLimite) {
+void listarmeiospeso(Grafo* grafo, int NIF, Utilizadores* inicio, char* tipo, float PesoLimite) {
 	Pilha* sequencia = NULL;
 	while (inicio->NIF != NIF) inicio = inicio->seguinte;
-	listarMeiosAuxpeso(grafo, inicio->geocodigo, tipo, sequencia, 0, PesoLimite);
+	listarmeiosauxpeso(grafo, inicio->geocodigo, tipo, sequencia, 0, PesoLimite);
 
 }
 
-void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia, float pesoTotal, float PesoLimite) {
+void listarmeiosauxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia, float pesoTotal, float PesoLimite) {
 	Grafo* inicio = grafo;
 	Adjacentes* auxadj;
 	grafo = pegarorigem(grafo, origem); // pega o vertice de onde está 
@@ -473,7 +473,7 @@ void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia
 		auxadj = grafo->adjacente; // loop para avançar para os vertices adjacentes
 		while (auxadj != NULL) {
 			grafo = inicio;
-			listarMeiosAuxpeso(grafo, auxadj->geocodigo, tipo, sequencia, pesoTotal + auxadj->peso, PesoLimite);
+			listarmeiosauxpeso(grafo, auxadj->geocodigo, tipo, sequencia, pesoTotal + auxadj->peso, PesoLimite);
 			auxadj = auxadj->seguinte;
 		}
 	}
@@ -482,7 +482,7 @@ void listarMeiosAuxpeso(Grafo* grafo, char* origem, char* tipo, Pilha* sequencia
 
 // Caixeiro Viajante //
 //função principal para a solução do caixeiro viajante, apresenta os caminhos necessarios a ser feitos para 
-void listarCaminhobateria(Grafo* grafo, char* origembase, char* tipo) {
+void listarcaminhobateria(Grafo* grafo, char* origembase, char* tipo) {
 	float peso = 0, auxpeso = 0;
 	int caminhaopeso = 0;
 	Pilha* verticesbat = NULL;

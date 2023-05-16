@@ -334,7 +334,7 @@ int main() {
 							else
 								printf("Digitou errado, escreva de novo:\n");
 						}
-						listarCaminhobateria(grafo, geocod, tipo);
+						listarcaminhobateria(grafo, geocod, tipo);
 					}
 					//Logout
 					else if (choice == 8) {
@@ -425,7 +425,7 @@ int main() {
 								printf("Digitou errado, escreva de novo:\n");
 						}
 						printf("Os meios disponiveis sao:\n");
-						listarMeiosPeso(grafo, utilNIF,utils,tipo, peso);
+						listarmeiospeso(grafo, utilNIF,utils,tipo, peso);
 					}
 
 					else if (choice == 6) {//Mudar geocodigo do utilizador
