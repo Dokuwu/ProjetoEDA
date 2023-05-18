@@ -40,7 +40,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Grafo apoio\grafo.docx">
+    <None Include="grafo\grafo.docx">
       <Filter>grafo</Filter>
     </None>
   </ItemGroup>

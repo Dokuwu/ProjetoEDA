@@ -29,7 +29,7 @@
     <ClInclude Include="ficheiroslistas.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Grafo apoio\grafo.docx" />
+    <None Include="grafo\grafo.docx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
