@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="grafo">
+      <UniqueIdentifier>{036ffa6f-dfe2-4900-92f6-966c5aa0bf80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -24,10 +27,21 @@
     <ClCompile Include="maniplistas.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="grafos.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listarcoisas.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ficheiroslistas.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Grafo apoio\grafo.docx">
+      <Filter>grafo</Filter>
+    </None>
   </ItemGroup>
 </Project>

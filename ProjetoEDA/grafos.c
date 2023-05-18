@@ -498,80 +498,85 @@ void listarcaminhobateria(Grafo* grafo, char* origembase, char* tipo) {
 		destino = verticesbat->geocodigo;
 		while (verticesbat != NULL) {
 
-			listapilhas = listarcaminhorapidoaux(grafo, origem, destino, NULL, 0.0, listapilhas);// pega todos os caminhos possiveis da origem até o destino
+				listapilhas = listarcaminhorapidoaux(grafo, origem, destino, NULL, 0.0, listapilhas);// pega todos os caminhos possiveis da origem até o destino
 
-			idamenor = verificarmenor(listapilhas);//pega o caminho com menor peso
-			//verificamos se existe um caminho da origem ao destino
-			if (idamenor == NULL) {//se for NULL significa que nao existe caminho da origem ao destino, tentamos ir para a base
-				printf("Não foi possivel encontrar um caminho possivel de %s a %s!\n", origem, destino);
-				if (origem != origembase) { // se já estiver na base nao precisa procurar o caminho da base até a base
-					listapilhas = listarcaminhorapidoaux(grafo, origem, origembase, NULL, 0.0, listapilhas);
-					idamenor = verificarmenor(listapilhas);
-					if (idamenor == NULL) {/// significa que nao é possivel voltar para atras
-						printf("Não foi possivel encontrar um caminho possivel de %s ate a base(%s)!\n", origem, origembase);
-					}
-					else {///se foi para a base, procura o caminho da base ao destino
-						caminhaopeso = 0;
-						listapilhas = listarcaminhorapidoaux(grafo, origembase, destino, NULL, 0.0, listapilhas);
+				idamenor = verificarmenor(listapilhas);//pega o caminho com menor peso
+				//verificamos se existe um caminho da origem ao destino
+				if (idamenor == NULL) {//se for NULL significa que nao existe caminho da origem ao destino, tentamos ir para a base
+					printf("Não foi possivel encontrar um caminho possivel de %s a %s!\n", origem, destino);
+					if (origem != origembase) { // se já estiver na base nao precisa procurar o caminho da base até a base
+						listapilhas = listarcaminhorapidoaux(grafo, origem, origembase, NULL, 0.0, listapilhas);
 						idamenor = verificarmenor(listapilhas);
-						if (idamenor == NULL) {//se nao foi possivel encontrar um caminho da base até o destino, mostra a mensagem
-							printf("Nao foi possivel encontrar uma caminho da base(%s) ate %s!\n", origembase, destino);
+						if (idamenor == NULL) {/// significa que nao é possivel voltar para atras
+							printf("Não foi possivel encontrar um caminho possivel de %s ate a base(%s)!\n", origem, origembase);
+						}
+						else {///se foi para a base, procura o caminho da base ao destino
+							caminhaopeso = 0;
+							listapilhas = listarcaminhorapidoaux(grafo, origembase, destino, NULL, 0.0, listapilhas);
+							idamenor = verificarmenor(listapilhas);
+							if (idamenor == NULL) {//se nao foi possivel encontrar um caminho da base até o destino, mostra a mensagem
+								printf("Nao foi possivel encontrar uma caminho da base(%s) ate %s!\n", origembase, destino);
+							}
 						}
 					}
 				}
-			}
-			//depois de verificar se existe caminhos partimos para a parte do caminhao
-			if (idamenor != NULL) {// verificamos se e diferente de NULL para que realize a parte da capacidade do caminhao se houver caminho
+				//depois de verificar se existe caminhos partimos para a parte do caminhao
+				if (idamenor != NULL) {// verificamos se e diferente de NULL para que realize a parte da capacidade do caminhao se houver caminho
 
-				listarcaminho(idamenor);
-				printf("Peso: %.2f\n", idamenor->peso);
-				peso += idamenor->peso;
-				caminhaopeso += nbatvertices(grafo, destino, tipo);//pega a quantidade de meios no vertice
-				if (caminhaopeso > 5) {// se estiver cheio
-					printf("\nCaminhao cheio!\n");
+					listarcaminho(idamenor);
+					printf("Peso: %.2f\n", idamenor->peso);
+					peso += idamenor->peso;
+					if (strcmp(destino, origembase)) {// se o destino for diferente da base calcula a carga do caminhao
+						caminhaopeso += nbatvertices(grafo, destino, tipo);//pega a quantidade de meios no vertice
+						if (caminhaopeso > 5) {// se estiver cheio
+							printf("\nCaminhao cheio!\n");
 
-					listapilhas = limparpilha(listapilhas);//limpa-se a lista de pilhas para que nao fique salvo qualquer valor que possa prejudicar a procura do menor caminho do seguinte
+							listapilhas = limparpilha(listapilhas);//limpa-se a lista de pilhas para que nao fique salvo qualquer valor que possa prejudicar a procura do menor caminho do seguinte
 
-					listapilhas = listarcaminhorapidoaux(grafo, destino, origembase, NULL, 0.0, listapilhas);//pega o caminho até a base
-					idamenor = verificarmenor(listapilhas);
+							listapilhas = listarcaminhorapidoaux(grafo, destino, origembase, NULL, 0.0, listapilhas);//pega o caminho até a base
+							idamenor = verificarmenor(listapilhas);
 
-					if (idamenor != NULL) {// verifica se existe
-						listarcaminho(idamenor);
-						printf("Peso: %.2f\n", idamenor->peso);
-						auxpeso = idamenor->peso;//auxilicar para pegar o peso até base
+							if (idamenor != NULL) {// verifica se existe
+								listarcaminho(idamenor);
+								printf("Peso: %.2f\n", idamenor->peso);
+								auxpeso = idamenor->peso;//auxilicar para pegar o peso até base
 
-						listapilhas = limparpilha(listapilhas);
+								listapilhas = limparpilha(listapilhas);
 
-						listapilhas = listarcaminhorapidoaux(grafo, origembase, destino, NULL, 0.0, listapilhas);//pega o caminho até a base
-						idamenor = verificarmenor(listapilhas);
+								listapilhas = listarcaminhorapidoaux(grafo, origembase, destino, NULL, 0.0, listapilhas);//pega o caminho até a base
+								idamenor = verificarmenor(listapilhas);
 
-						if (idamenor != NULL) {// verifica se existe caminho da base ao destino
-							listarcaminho(idamenor);
-							printf("Peso: %.2f\n", idamenor->peso);
-							if (caminhaopeso % 5 == 0) {// se o numero de meios for divisivel por cinco, ele vai parar na base
-								printf("Precisa realizar um ciclo entre %s e %s %d vezes e acabara em %s\n\n", destino, origembase, (caminhaopeso / 5), origembase);
-								for (int i = 0; i <= (caminhaopeso / 5) - 1; i++) peso += idamenor->peso;//menos 1 pois nao faz o caminho de volta
-								for (int i = 0; i <= (caminhaopeso / 5); i++) peso += auxpeso;
-								caminhaopeso = 0;
+								if (idamenor != NULL) {// verifica se existe caminho da base ao destino
+									listarcaminho(idamenor);
+									printf("Peso: %.2f\n", idamenor->peso);
+									if (caminhaopeso % 5 == 0) {// se o numero de meios for divisivel por cinco, ele vai parar na base
+										printf("Precisa realizar um ciclo entre %s e %s %d vezes e acabara em %s\n\n", destino, origembase, (caminhaopeso / 5), origembase);
+										for (int i = 0; i <= (caminhaopeso / 5) - 1; i++) peso += idamenor->peso;//menos 1 pois nao faz o caminho de volta
+										for (int i = 0; i <= (caminhaopeso / 5); i++) peso += auxpeso;
+										caminhaopeso = 0;
+									}
+									else {//se nao for, vai entregar, e ao voltar, vai ficar com o resto da divisão de numero de vertices.
+										printf("\n\nPrecisa realizar um ciclo entre %s e %s %d vezes e acabara em %s\n\n", destino, origembase, (caminhaopeso / 5), destino);
+										for (int i = 0; i <= (caminhaopeso / 5); i++) peso += idamenor->peso;
+										for (int i = 0; i <= (caminhaopeso / 5); i++) peso += auxpeso;
+										caminhaopeso = (caminhaopeso % 5);
+									}
+								}
+								else {
+									printf("E possivel ir para a base(%s) mas nao e possivel voltar ao destino (%s)", origembase, destino);
+								}
 							}
-							else {//se nao for, vai entregar, e ao voltar, vai ficar com o resto da divisão de numero de vertices.
-								printf("\n\nPrecisa realizar um ciclo entre %s e %s %d vezes e acabara em %s\n\n", destino, origembase, (caminhaopeso / 5), destino);
-								for (int i = 0; i <= (caminhaopeso / 5); i++) peso += idamenor->peso;
-								for (int i = 0; i <= (caminhaopeso / 5); i++) peso += auxpeso;
-								caminhaopeso = (caminhaopeso % 5);
+							else {
+								printf("O caminhao esta cheio e nao tem como voltar para a base!\n");
 							}
 						}
-						else {
-							printf("E possivel ir para a base(%s) mas nao e possivel voltar ao destino (%s)", origembase, destino);
-						}
-					}
-					else {
-						printf("O caminhao esta cheio e nao tem como voltar para a base!\n");
 					}
 				}
-			}
+				else {
+					caminhaopeso = 0;
+				}
 			// parte para definir a origem e destino do proximo loop
-			if (idamenor != NULL) {// se foi possivel encontrar um caminho
+			if (idamenor != NULL) {// se foi possivel encontrar um caminho, ou a origem e o destino é a base
 
 				listapilhas = limparpilha(listapilhas);
 
@@ -608,8 +613,8 @@ void listarcaminhobateria(Grafo* grafo, char* origembase, char* tipo) {
 
 /////////////////////////// Calculo do caminho mais rapido //////////////////////////////////////////////////
 
-
-Listapilhas* listarcaminhorapidoaux(Grafo* grafo, char* origem, char* destino, Pilha* sequencia, float pesoTotal, Listapilhas* listacaminhos) {//pega todos os caminhos possiveis de um ponto ao outro
+//pega todos os caminhos possiveis de um ponto ao outro
+Listapilhas* listarcaminhorapidoaux(Grafo* grafo, char* origem, char* destino, Pilha* sequencia, float pesoTotal, Listapilhas* listacaminhos) {
 	Grafo* inicio = grafo;
 	Adjacentes* aux;
 	Pilha* sequencianova = NULL;
@@ -618,14 +623,14 @@ Listapilhas* listarcaminhorapidoaux(Grafo* grafo, char* origem, char* destino, P
 	grafo = pegarorigem(grafo, origem);
 	sequencianova = copiarpilha(sequencianova, sequencia);
 	sequencianova = colocarsequencia(sequencianova, grafo->geocodigo);
-	if (!(strcmp(grafo->geocodigo, destino))) {
+	if (!(strcmp(grafo->geocodigo, destino))) {// compara se já chegou ao destino, se sim guarda o caminho
 		listacaminhos = guardarcaminho(sequencianova, listacaminhos, pesoTotal);
 		return listacaminhos;
 	}
 	else {
 		aux = grafo->adjacente;
 		while (aux != NULL) {
-			if (!visitado(sequencianova, aux->geocodigo)) {
+			if (!visitado(sequencianova, aux->geocodigo)) {// visita os vertices adjacentes
 				grafo = inicio;
 				listacaminhos = listarcaminhorapidoaux(grafo, aux->geocodigo, destino, sequencianova, pesoTotal + aux->peso, listacaminhos);
 			}
@@ -633,7 +638,7 @@ Listapilhas* listarcaminhorapidoaux(Grafo* grafo, char* origem, char* destino, P
 		}
 	}
 
-	while (sequencianova != NULL) {
+	while (sequencianova != NULL) {//liberta da memoria os caminhos que nao conseguiram chegar ao destino
 		auxfree1 = sequencianova;
 		auxfree2 = sequencianova->seguinte;
 		free(auxfree1);

@@ -28,6 +28,9 @@
   <ItemGroup>
     <ClInclude Include="ficheiroslistas.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Grafo apoio\grafo.docx" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
